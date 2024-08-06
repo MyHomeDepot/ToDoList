@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var cases: [SingleItemModel] = [SingleItemModel(title: "Jump from building"), SingleItemModel(title: "Backflip"), SingleItemModel(title: "Meditation"), SingleItemModel(title: "Bomb the ball")]
+    var cases: [SingleItemModel] = [SingleItemModel(title: "Jump from building"), SingleItemModel(title: "Backflip", isComplited: true), SingleItemModel(title: "Meditation"), SingleItemModel(title: "Bomb the ball")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,14 +65,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let caseItem = cases[indexPath.row]
         
         cell.textLabel?.text = caseItem.title
-        cell.accessoryType = .checkmark
         cell.backgroundColor = .cyan
+        cell.accessoryType = .checkmark
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
-        if editingStyle == . delete {
+        if editingStyle == .delete {
             cases.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
