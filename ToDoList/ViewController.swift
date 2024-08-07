@@ -9,19 +9,13 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var cases: [SingleItemModel] = [SingleItemModel(title: "Jump from building"), SingleItemModel(title: "Backflip", isComplited: true), SingleItemModel(title: "Meditation"), SingleItemModel(title: "Bomb the ball")]
+    var cases: [SingleItemModel] = [SingleItemModel(title: "Jump from building"), SingleItemModel(title: "Backflip"), SingleItemModel(title: "Meditation"), SingleItemModel(title: "Bomb the ball", isComplited: true)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.window?.backgroundColor = .systemMint
         configureBar()
-        navigationItem.title = "Dream Things"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openForm))
-        
-        view.addSubview(tableView)
         configureTableView()
-        constrainTableView()
+        layoutTableView()
     }
     
     //MARK: - Form to add case
@@ -47,30 +41,67 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
     
+    //MARK: - Status toggle
+    @objc func statusToggle(sender: UIButton) {
+        let index = sender.tag
+        cases[index].isComplited.toggle()
+        tableView.reloadData()
+    }
+    
     //MARK: - Navigation bar configure
     func configureBar() {
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .systemMint
+        appearance.backgroundColor = .tertiaryLabel
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        navigationItem.title = "Dream Things"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openForm))
+        navigationItem.rightBarButtonItem?.tintColor = .label
     }
     
     // MARK: - Table view operations
+    
+    // Table initialize
+    var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .tertiaryLabel
+        return tableView
+    }()
+    
+    // Table configure
+    func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.allowsSelection = true
+        tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
+    }
+    
+    // Number of cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cases.count
     }
     
+    // Height of cells
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 25
+    }
+    
+    // Cell configure
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "caseCell")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as? CustomCell else {
+            fatalError("The TableView could not dequeue a CustomCell in ViewController")
+        }
+        cell.backgroundColor = .systemGray
         let caseItem = cases[indexPath.row]
-        
-        cell.textLabel?.text = caseItem.title
-        cell.backgroundColor = .cyan
-        cell.accessoryType = .checkmark
-        
+        cell.configureCell(state: caseItem.isComplited, label: caseItem.title)
+
+        cell.cellButton.tag = indexPath.row
+        cell.cellButton.addTarget(self, action: #selector(statusToggle(sender: )), for: .touchUpInside)
         return cell
     }
     
+    // Remove case from table
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete {
             cases.remove(at: indexPath.row)
@@ -78,22 +109,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .systemMint
+    // Table layout
+    func layoutTableView() {
+        self.view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        return tableView
-    }()
-    
-    func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.allowsSelection = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "caseCell")
-    }
-    
-    func constrainTableView() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -102,4 +122,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         ])
     }
 }
-

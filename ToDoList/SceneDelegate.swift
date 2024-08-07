@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = UINavigationController(rootViewController: ViewController())
         self.window = window
         self.window?.makeKeyAndVisible()
+        self.window?.backgroundColor = .tertiaryLabel
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

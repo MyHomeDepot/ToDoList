@@ -11,10 +11,6 @@ struct SingleItemModel {
     var id: UUID = UUID()
     var title: String
     var isComplited: Bool = false
-    
-    mutating func statusToggle() {
-        isComplited = true
-    }
 }
 
 
