@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     var cases: [SingleItemModel] = [SingleItemModel(title: "Jump from building"), SingleItemModel(title: "Backflip"), SingleItemModel(title: "Meditation"), SingleItemModel(title: "Bomb the ball", isComplited: true)]
     
@@ -50,15 +50,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     //MARK: - Hide keyboard
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func dismissKeyboard() {
-           let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
-           tap.cancelsTouchesInView = false
-           view.addGestureRecognizer(tap)
-        }
-        
-        @objc func dismissKeyboardTouchOutside() {
-           view.endEditing(true)
-        }
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboardTouchOutside() {
+        view.endEditing(true)
+    }
     
     //MARK: - Status toggle
     @objc func statusToggle(sender: UIButton) {
@@ -115,9 +120,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let caseItem = cases[indexPath.row]
         cell.configureCell(state: caseItem.isComplited, label: caseItem.title)
         
+        cell.cellLabel.delegate = self
         cell.cellLabel.tag = indexPath.row
         cell.cellLabel.addTarget(self, action: #selector(changeLabel(sender: )), for: .editingDidEnd)
-
+        
         cell.cellButton.tag = indexPath.row
         cell.cellButton.addTarget(self, action: #selector(statusToggle(sender: )), for: .touchUpInside)
         return cell
