@@ -23,6 +23,8 @@ class CustomCell: UITableViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.text = "Error"
+        label.allowsEditingTextAttributes = true
+
         return label
     }()
     

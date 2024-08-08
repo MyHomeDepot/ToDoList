@@ -41,6 +41,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
     
+    //MARK: - Change label
+    @objc func changeLabel(sender: UITextField) {
+        let index = sender.tag
+        cases[index].title = sender.text!
+        dismissKeyboard()
+        tableView.reloadData()
+    }
+    
+    //MARK: - Hide keyboard
+    func dismissKeyboard() {
+           let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
+           tap.cancelsTouchesInView = false
+           view.addGestureRecognizer(tap)
+        }
+        
+        @objc func dismissKeyboardTouchOutside() {
+           view.endEditing(true)
+        }
+    
     //MARK: - Status toggle
     @objc func statusToggle(sender: UIButton) {
         let index = sender.tag
@@ -95,6 +114,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.backgroundColor = .systemGray
         let caseItem = cases[indexPath.row]
         cell.configureCell(state: caseItem.isComplited, label: caseItem.title)
+        
+        cell.cellLabel.tag = indexPath.row
+        cell.cellLabel.addTarget(self, action: #selector(changeLabel(sender: )), for: .editingDidEnd)
 
         cell.cellButton.tag = indexPath.row
         cell.cellButton.addTarget(self, action: #selector(statusToggle(sender: )), for: .touchUpInside)
