@@ -14,6 +14,8 @@
 		0477115C2C5BD117009DF976 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0477115B2C5BD117009DF976 /* ViewController.swift */; };
 		047711612C5BD11A009DF976 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047711602C5BD11A009DF976 /* Assets.xcassets */; };
 		047711642C5BD11A009DF976 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 047711632C5BD11A009DF976 /* Base */; };
+		04F854C02C696DDE0064329F /* ViewController+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F854BF2C696DDE0064329F /* ViewController+Picker.swift */; };
+		04F854C22C69740F0064329F /* ViewContoller+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F854C12C69740F0064329F /* ViewContoller+TableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		047711602C5BD11A009DF976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		047711632C5BD11A009DF976 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		047711652C5BD11A009DF976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04F854BF2C696DDE0064329F /* ViewController+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Picker.swift"; sourceTree = "<group>"; };
+		04F854C12C69740F0064329F /* ViewContoller+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewContoller+TableView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				047711622C5BD11A009DF976 /* LaunchScreen.storyboard */,
 				047711652C5BD11A009DF976 /* Info.plist */,
 				0426A6512C5EBBAB00EFAD58 /* SingleItemModel.swift */,
+				04F854BF2C696DDE0064329F /* ViewController+Picker.swift */,
+				04F854C12C69740F0064329F /* ViewContoller+TableView.swift */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";
@@ -142,7 +148,9 @@
 			files = (
 				0477115C2C5BD117009DF976 /* ViewController.swift in Sources */,
 				047711582C5BD117009DF976 /* AppDelegate.swift in Sources */,
+				04F854C02C696DDE0064329F /* ViewController+Picker.swift in Sources */,
 				0453FF2E2C62A3DF009776D7 /* CustomCell.swift in Sources */,
+				04F854C22C69740F0064329F /* ViewContoller+TableView.swift in Sources */,
 				0426A6522C5EBBAB00EFAD58 /* SingleItemModel.swift in Sources */,
 				0477115A2C5BD117009DF976 /* SceneDelegate.swift in Sources */,
 			);

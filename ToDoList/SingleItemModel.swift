@@ -16,6 +16,6 @@ struct SingleItemModel {
 
 enum State: String, CaseIterable {
     case toDo = "To Do"
-    case inProgress = "In Progress"
+    case inProgress = "In Process"
     case done = "Done"
 }

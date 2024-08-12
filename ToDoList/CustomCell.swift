@@ -29,6 +29,8 @@ class CustomCell: UITableViewCell {
     
     var cellStateButton: UIButton = {
         let button = UIButton()
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = .italicSystemFont(ofSize: 14)
         return button
     }()
     
@@ -49,6 +51,15 @@ class CustomCell: UITableViewCell {
         
         cellStateButton.setTitle("\(caseItem.state.rawValue)", for: .normal)
         cellStateButton.tintColor = .label
+        cellStateButton.backgroundColor = statusColor(caseItem: caseItem)
+    }
+    
+    func statusColor(caseItem: SingleItemModel) -> UIColor {
+        switch caseItem.state {
+        case .toDo: return UIColor.darkGray
+        case .done: return UIColor.green
+        case .inProgress: return UIColor.orange
+        }
     }
     
     func layoutCellView() {
@@ -64,17 +75,18 @@ class CustomCell: UITableViewCell {
             cellCheck.topAnchor.constraint(equalTo: self.contentView.layoutMarginsGuide.topAnchor),
             cellCheck.bottomAnchor.constraint(equalTo: self.contentView.layoutMarginsGuide.bottomAnchor),
             cellCheck.leadingAnchor.constraint(equalTo: self.contentView.layoutMarginsGuide.leadingAnchor),
-            cellCheck.widthAnchor.constraint(equalToConstant: 20),
+            cellCheck.heightAnchor.constraint(equalToConstant: 25),
+            cellCheck.widthAnchor.constraint(equalToConstant: 25),
             
             cellLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             cellLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            cellLabel.leadingAnchor.constraint(equalTo: self.cellCheck.trailingAnchor, constant: 25),
-            cellLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -35),
+            cellLabel.leadingAnchor.constraint(equalTo: self.cellCheck.trailingAnchor, constant: 15),
+            cellLabel.trailingAnchor.constraint(equalTo: self.cellStateButton.trailingAnchor, constant: -50),
             
             cellStateButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             cellStateButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20),
-            cellStateButton.widthAnchor.constraint(equalToConstant: 40),
-            cellStateButton.heightAnchor.constraint(equalToConstant: 50)
+            cellStateButton.widthAnchor.constraint(equalToConstant: 70),
+            cellStateButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
 }
