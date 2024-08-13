@@ -5,9 +5,9 @@
 //  Created by LEO on 03.08.2024.
 //
 
-import UIKit
+import Foundation
 
-struct SingleItemModel {
+struct Task {
     var id: UUID = UUID()
     var title: String
     var isComplited: Bool = false
