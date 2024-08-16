@@ -54,24 +54,44 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         appearance.backgroundColor = .gray
         
         navigationItem.title = "Dream Things"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskForm))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskAlert))
         navigationItem.rightBarButtonItem?.tintColor = .label
     }
     
-    @objc func showAddTaskForm() {
-        let alert = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
-        alert.addTextField()
+    @objc func showAddTaskAlert() {
+        let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
-        let saveButton = UIAlertAction(title: "Save", style: .default) { _ in
-            if let text = alert.textFields?.first?.text {
-                self.appendCase(title: text)
+        result.addTextField {
+            $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(textField: )), for: .editingChanged)
+        }
+        
+        let saveAlertButton = UIAlertAction(title: "Save", style: .default) { _ in
+            if let textFieldText = result.textFields?.first?.text {
+                self.appendCase(title: textFieldText)
             }
         }
-        alert.addAction(saveButton)
-        let cancelButton = UIAlertAction(title: "Cancel", style: .destructive)
-        alert.addAction(cancelButton)
+        saveAlertButton.isEnabled = false
+        result.addAction(saveAlertButton)
         
-        present (alert, animated: true)
+        let cancelAlertButton = UIAlertAction(title: "Cancel", style: .destructive)
+        result.addAction(cancelAlertButton)
+        
+        present(result, animated: true)
+    }
+    
+    @objc func textFieldDidChangeInAlert(textField: UITextField) {
+        guard let alertVC = presentedViewController as? UIAlertController else {
+            return
+        }
+        
+        if let text = textField.text,
+           let saveActionInAlert = alertVC.actions.first {
+            saveActionInAlert.isEnabled = isValidTitle(text: text)
+        }
+    }
+    
+    @objc func isValidTitle(text: String) -> Bool {
+        !text.isEmpty
     }
     
     @objc func appendCase(title: String) {
