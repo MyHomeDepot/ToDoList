@@ -10,12 +10,10 @@ import UIKit
 extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
         return State.allCases.count
     }
     
@@ -49,6 +47,7 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         taskStateBar.isUserInteractionEnabled = true
         
         taskStatePickerView.tag = sender.tag
+        taskStatePickerView.section = sender.section
         
         taskStateBar.isHidden = false
         taskStatePickerView.isHidden = false
@@ -59,10 +58,17 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         taskStateBar.isHidden = true
         
         let index = taskStatePickerView.tag
+        let section = taskStatePickerView.section
+        
         let selectRow = taskStatePickerView.selectedRow(inComponent: 0)
         let selectedState = State.allCases[selectRow]
         
-        cases[index].state = selectedState
+        if section == 0 {
+            uncompletedTaskList[index].state = selectedState
+        } else {
+            completedTaskList[index].state = selectedState
+        }
+        
         taskListTableView.reloadData()
     }
     

@@ -10,7 +10,7 @@ import UIKit
 class TaskListViewController: UIViewController, UITextFieldDelegate {
     
     var taskListTableView: UITableView = {
-        let result = UITableView()
+        let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
         
         return result
@@ -34,24 +34,36 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    var cases: [Task] = [
+    var sections: [String] = ["Hold", "Success"]
+    
+    var sourceTaskList: [Task] = [
         Task(title: "Jump from building"),
         Task(title: "Backflip"),
         Task(title: "Meditation"),
         Task(title: "Bomb the ball", isComplited: true)]
     
+    var uncompletedTaskList: [Task] = []
+    var completedTaskList: [Task] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        filterSourceTaskList()
         configureNavigationBar()
         configureTableView()
         configurePickerView()
         viewLayout()
     }
     
+    @objc func filterSourceTaskList() {
+        uncompletedTaskList = sourceTaskList.filter { !$0.isComplited }
+        completedTaskList = sourceTaskList.filter { $0.isComplited }
+    }
+    
     func configureNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .gray
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         navigationItem.title = "Dream Things"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskAlert))
@@ -62,7 +74,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
         result.addTextField {
-            $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(textField: )), for: .editingChanged)
+            $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(sender: )), for: .editingChanged)
         }
         
         let saveAlertButton = UIAlertAction(title: "Save", style: .default) { _ in
@@ -79,41 +91,56 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         present(result, animated: true)
     }
     
-    @objc func textFieldDidChangeInAlert(textField: UITextField) {
+    @objc func textFieldDidChangeInAlert(sender: UITextField) {
         guard let alertVC = presentedViewController as? UIAlertController else {
             return
         }
         
-        if let text = textField.text,
+        if let text = sender.text,
            let saveActionInAlert = alertVC.actions.first {
             saveActionInAlert.isEnabled = isValidTitle(text: text)
         }
     }
     
     @objc func isValidTitle(text: String) -> Bool {
-        !text.isEmpty
+        return !text.isEmpty
     }
     
     @objc func appendCase(title: String) {
-        cases.append(Task(title: title))
+        let result = Task(title: title)
+        uncompletedTaskList.append(result)
         taskListTableView.reloadData()
     }
     
     @objc func checkmarkButtonToggle(sender: UIButton) {
         let index = sender.tag
-        cases[index].isComplited.toggle()
+        
+        if sender.section == 0 {
+            uncompletedTaskList[index].isComplited.toggle()
+            completedTaskList.append(uncompletedTaskList.remove(at: index))
+        } else {
+            completedTaskList[index].isComplited.toggle()
+            uncompletedTaskList.append(completedTaskList.remove(at: index))
+        }
+        
         taskListTableView.reloadData()
     }
     
     @objc func changeTaskName(sender: UITextField) {
         let index = sender.tag
-        cases[index].title = sender.text!
+        
+        if sender.section == 0 {
+            uncompletedTaskList[index].title = sender.text!
+        } else {
+            completedTaskList[index].title = sender.text!
+        }
+        
         dismissKeyboard()
         taskListTableView.reloadData()
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    func textFieldShouldReturn(sender: UITextField) -> Bool {
+        sender.resignFirstResponder()
         
         return true
     }
