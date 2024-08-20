@@ -9,16 +9,16 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     
-    static let identifier = "CustomCell"
+    private static let identifier = "CustomCell"
     
-    var checkmarkButton: UIButton = {
+    internal var checkmarkButton: UIButton = {
         let result = UIButton()
         result.setImage(UIImage(systemName: "questionmark"), for: .normal)
         
         return result
     }()
     
-    var taskNameTextField: UITextField = {
+    internal var taskNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = .label
         result.textAlignment = .left
@@ -29,7 +29,7 @@ class TaskCell: UITableViewCell {
         return result
     }()
     
-    var taskStateButton: UIButton = {
+    internal var taskStateButton: UIButton = {
         let result = UIButton()
         result.layer.cornerRadius = 10
         result.titleLabel?.font = .italicSystemFont(ofSize: 14)
@@ -46,26 +46,30 @@ class TaskCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell (task: Task) {
-        checkmarkButton.setImage(UIImage(systemName: task.isComplited ? "checkmark.square" : "square"), for: .normal)
+    public static func getIdentifier() -> String {
+        return TaskCell.identifier
+    }
+    
+    public func configureCell (task: Task) {
+        checkmarkButton.setImage(UIImage(systemName: task.getStatus() ? "checkmark.square" : "square"), for: .normal)
         checkmarkButton.tintColor = .label
         
-        taskNameTextField.text = task.title
+        taskNameTextField.text = task.getTitle()
         
-        taskStateButton.setTitle("\(task.state.rawValue)", for: .normal)
+        taskStateButton.setTitle("\(task.getEnumStateValue())", for: .normal)
         taskStateButton.tintColor = .label
         taskStateButton.backgroundColor = statusColor(task: task)
     }
     
-    func statusColor(task: Task) -> UIColor {
-        switch task.state {
+    private func statusColor(task: Task) -> UIColor {
+        switch task.getState() {
         case .toDo: return UIColor.darkGray
         case .done: return UIColor.green
         case .inProgress: return UIColor.orange
         }
     }
     
-    func cellViewLayout() {
+    private func cellViewLayout() {
         contentView.addSubview(checkmarkButton)
         contentView.addSubview(taskNameTextField)
         contentView.addSubview(taskStateButton)

@@ -64,9 +64,9 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let selectedState = State.allCases[selectRow]
         
         if section == 0 {
-            uncompletedTaskList[index].state = selectedState
+            TaskList.changeState(at: index, on: selectedState, in: "hold")
         } else {
-            completedTaskList[index].state = selectedState
+            TaskList.changeState(at: index, on: selectedState, in: "success")
         }
         
         taskListTableView.reloadData()

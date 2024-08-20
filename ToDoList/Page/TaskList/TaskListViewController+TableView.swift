@@ -9,15 +9,15 @@ import UIKit
 
 extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func configureTableView() {
+    public func configureTableView() {
         taskListTableView.delegate = self
         taskListTableView.dataSource = self
         taskListTableView.allowsSelection = false
-        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.identifier)
+        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return getSectionCount()
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -28,7 +28,7 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         let result = UIView(frame: CGRect(x: 0, y: 0, width: taskListTableView.frame.size.width, height: 35))
         
         let label = UILabel(frame: CGRect(x: 10, y: 4, width: result.frame.size.width, height: 35))
-        label.text = sections[section]
+        label.text = getSection(index: section)
         label.textColor = .label
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 25, weight: .light)
@@ -49,9 +49,9 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return uncompletedTaskList.count
+            return TaskList.getTaskCount(in: "hold")
         } else {
-            return completedTaskList.count
+            return TaskList.getTaskCount(in: "success")
         }
     }
     
@@ -67,12 +67,18 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let result = tableView.dequeueReusableCell(withIdentifier: TaskCell.identifier, for: indexPath) as? TaskCell else {
+        guard let result = tableView.dequeueReusableCell(withIdentifier: TaskCell.getIdentifier(), for: indexPath) as? TaskCell else {
             fatalError("The TableView could not dequeue a CustomCell in ViewController")
         }
-        
+    
         result.backgroundColor = .lightGray
-        let task = indexPath.section == 0 ? uncompletedTaskList[indexPath.row] : completedTaskList[indexPath.row]
+        
+        var task: Task
+        if indexPath.section == 0 {
+            task = TaskList.getTaskByIndex(at: indexPath.row, in: "hold")
+        } else {
+            task = TaskList.getTaskByIndex(at: indexPath.row, in: "success")
+        }
         result.configureCell(task: task)
         
         result.checkmarkButton.tag = indexPath.row
@@ -94,10 +100,10 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete {
             if indexPath.section == 0 {
-                uncompletedTaskList.remove(at: indexPath.row)
+                TaskList.removeTask(at: indexPath.row, in: "hold")
                 tableView.deleteRows(at: [indexPath], with: .fade)
             } else {
-                completedTaskList.remove(at: indexPath.row)
+                TaskList.removeTask(at: indexPath.row, in: "success")
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         }

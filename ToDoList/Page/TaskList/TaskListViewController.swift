@@ -9,14 +9,14 @@ import UIKit
 
 class TaskListViewController: UIViewController, UITextFieldDelegate {
     
-    var taskListTableView: UITableView = {
+    internal var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
         
         return result
     }()
     
-    let taskStateBar: UIToolbar = {
+    internal let taskStateBar: UIToolbar = {
         let result = UIToolbar()
         result.isHidden = true
         result.layer.masksToBounds = true
@@ -26,7 +26,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    var taskStatePickerView: UIPickerView = {
+    internal var taskStatePickerView: UIPickerView = {
         let result = UIPickerView()
         result.isHidden = true
         result.layer.cornerRadius = 10
@@ -34,32 +34,32 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    var sections: [String] = ["Hold", "Success"]
+    private let sections: [String] = ["Hold", "Success"]
     
-    var sourceTaskList: [Task] = [
+    private var sourceTaskList: [Task] = [
         Task(title: "Jump from building"),
         Task(title: "Backflip"),
         Task(title: "Meditation"),
-        Task(title: "Bomb the ball", isComplited: true)]
-    
-    var uncompletedTaskList: [Task] = []
-    var completedTaskList: [Task] = []
+        Task(title: "Bomb the ball", isCompleted: true)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterSourceTaskList()
+        TaskList.categorizeTasks(for: sourceTaskList)
         configureNavigationBar()
         configureTableView()
         configurePickerView()
         viewLayout()
     }
     
-    @objc func filterSourceTaskList() {
-        uncompletedTaskList = sourceTaskList.filter { !$0.isComplited }
-        completedTaskList = sourceTaskList.filter { $0.isComplited }
+    public func getSection(index: Int) -> String {
+        return sections[index]
     }
     
-    func configureNavigationBar() {
+    public func getSectionCount() -> Int {
+        return sections.count
+    }
+    
+    private func configureNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .gray
         navigationController?.navigationBar.standardAppearance = appearance
@@ -70,7 +70,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         navigationItem.rightBarButtonItem?.tintColor = .label
     }
     
-    @objc func showAddTaskAlert() {
+    @objc private func showAddTaskAlert() {
         let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
         result.addTextField {
@@ -91,7 +91,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         present(result, animated: true)
     }
     
-    @objc func textFieldDidChangeInAlert(sender: UITextField) {
+    @objc private func textFieldDidChangeInAlert(sender: UITextField) {
         guard let alertVC = presentedViewController as? UIAlertController else {
             return
         }
@@ -102,60 +102,60 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc func isValidTitle(text: String) -> Bool {
+    @objc private func isValidTitle(text: String) -> Bool {
         return !text.isEmpty
     }
     
-    @objc func appendCase(title: String) {
+    @objc private func appendCase(title: String) {
         let result = Task(title: title)
-        uncompletedTaskList.append(result)
+        TaskList.appendTask(for: result, in: "hold")
         taskListTableView.reloadData()
     }
     
-    @objc func checkmarkButtonToggle(sender: UIButton) {
+    @objc public func checkmarkButtonToggle(sender: UIButton) {
         let index = sender.tag
         
         if sender.section == 0 {
-            uncompletedTaskList[index].isComplited.toggle()
-            completedTaskList.append(uncompletedTaskList.remove(at: index))
+            TaskList.toggleStatus(at: index, in: "hold")
+            TaskList.appendTask(for: TaskList.removeTask(at: index, in: "hold"), in: "success")
         } else {
-            completedTaskList[index].isComplited.toggle()
-            uncompletedTaskList.append(completedTaskList.remove(at: index))
+            TaskList.toggleStatus(at: index, in: "success")
+            TaskList.appendTask(for: TaskList.removeTask(at: index, in: "success"), in: "hold")
         }
         
         taskListTableView.reloadData()
     }
     
-    @objc func changeTaskName(sender: UITextField) {
+    @objc public func changeTaskName(sender: UITextField) {
         let index = sender.tag
         
         if sender.section == 0 {
-            uncompletedTaskList[index].title = sender.text!
+            TaskList.changeTitle(at: index, on: sender.text!, in: "hold")
         } else {
-            completedTaskList[index].title = sender.text!
+            TaskList.changeTitle(at: index, on: sender.text!, in: "success")
         }
         
         dismissKeyboard()
         taskListTableView.reloadData()
     }
     
-    func textFieldShouldReturn(sender: UITextField) -> Bool {
+    private func textFieldShouldReturn(sender: UITextField) -> Bool {
         sender.resignFirstResponder()
         
         return true
     }
     
-    func dismissKeyboard() {
+    private func dismissKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
-    @objc func dismissKeyboardTouchOutside() {
+    @objc private func dismissKeyboardTouchOutside() {
         view.endEditing(true)
     }
     
-    func viewLayout() {
+    private func viewLayout() {
         view.addSubview(taskListTableView)
         view.addSubview(taskStateBar)
         view.addSubview(taskStatePickerView)

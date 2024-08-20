@@ -10,7 +10,7 @@ import UIKit
 private var sectionKey: UInt8 = 0
 
 extension UIButton {
-    var section: Int {
+    public var section: Int {
         get {
             return objc_getAssociatedObject(self, &sectionKey) as? Int ?? 0
         }
@@ -21,7 +21,7 @@ extension UIButton {
 }
 
 extension UITextField {
-    var section: Int {
+    public var section: Int {
         get {
             return objc_getAssociatedObject(self, &sectionKey) as? Int ?? 0
         }
