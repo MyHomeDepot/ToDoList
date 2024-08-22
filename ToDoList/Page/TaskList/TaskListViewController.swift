@@ -114,13 +114,15 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
     
     @objc public func checkmarkButtonToggle(sender: UIButton) {
         let index = sender.tag
-        
+        let removedTask: Task
         if sender.section == 0 {
             TaskList.toggleStatus(at: index, in: "hold")
-            TaskList.appendTask(for: TaskList.removeTask(at: index, in: "hold"), in: "success")
+            removedTask = TaskList.removeTask(at: index, in: "hold")
+            TaskList.appendTask(for: removedTask, in: "success")
         } else {
             TaskList.toggleStatus(at: index, in: "success")
-            TaskList.appendTask(for: TaskList.removeTask(at: index, in: "success"), in: "hold")
+            removedTask = TaskList.removeTask(at: index, in: "success")
+            TaskList.appendTask(for: removedTask, in: "hold")
         }
         
         taskListTableView.reloadData()

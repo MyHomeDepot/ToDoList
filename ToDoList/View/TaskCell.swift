@@ -11,14 +11,14 @@ class TaskCell: UITableViewCell {
     
     private static let identifier = "CustomCell"
     
-    internal var checkmarkButton: UIButton = {
+    var checkmarkButton: UIButton = {
         let result = UIButton()
         result.setImage(UIImage(systemName: "questionmark"), for: .normal)
         
         return result
     }()
     
-    internal var taskNameTextField: UITextField = {
+    var taskNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = .label
         result.textAlignment = .left
@@ -29,7 +29,7 @@ class TaskCell: UITableViewCell {
         return result
     }()
     
-    internal var taskStateButton: UIButton = {
+    var taskStateButton: UIButton = {
         let result = UIButton()
         result.layer.cornerRadius = 10
         result.titleLabel?.font = .italicSystemFont(ofSize: 14)

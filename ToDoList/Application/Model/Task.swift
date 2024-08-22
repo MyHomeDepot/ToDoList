@@ -35,7 +35,8 @@ public struct Task {
     }
     
     public mutating func toggleStatus() {
-        self.isCompleted.toggle()
+        isCompleted.toggle()
+        autoChangeState()
     }
     
     public func getState() -> State {
@@ -48,6 +49,13 @@ public struct Task {
     
     public mutating func setState(state: State) {
         self.state = state
+    }
+    
+    private mutating func autoChangeState() {
+        switch isCompleted {
+        case true: setState(state: .done)
+        case false: setState(state: .toDo)
+        }
     }
 }
 

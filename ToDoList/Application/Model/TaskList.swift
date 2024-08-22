@@ -30,9 +30,9 @@ public struct TaskList {
     public static func appendTask(for task: Task, in indicator: String) {
         switch indicator{
         case "hold":
-            uncompletedTaskList.append(task)
+            uncompletedTaskList.insert(task, at: 0)
         case "success":
-            completedTaskList.append(task)
+            completedTaskList.insert(task, at: 0)
         default:
             fatalError("Invalid indicator: \(indicator)")
         }
