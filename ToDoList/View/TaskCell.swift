@@ -52,7 +52,7 @@ class TaskCell: UITableViewCell {
     
     public func configureCell (task: Task) {
         checkmarkButton.setImage(UIImage(systemName: task.getStatus() ? "checkmark.square" : "square"), for: .normal)
-        checkmarkButton.tintColor = .label
+        checkmarkButton.tintColor = .yellow
         
         taskNameTextField.text = task.getTitle()
         
@@ -96,5 +96,4 @@ class TaskCell: UITableViewCell {
             taskStateButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
 }

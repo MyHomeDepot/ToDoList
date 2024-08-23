@@ -53,7 +53,7 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         taskStatePickerView.isHidden = false
     }
     
-    @objc func doneClick(sender: UIBarButtonItem) {
+    @objc func doneClick() {
         taskStatePickerView.isHidden = true
         taskStateBar.isHidden = true
         
@@ -65,8 +65,14 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         
         if section == 0 {
             TaskList.changeState(at: index, on: selectedState, in: "hold")
+            if selectedState == .done && !TaskList.getTaskByIndex(at: index, in: "hold").getStatus() {
+                checkmarkToggle(at: index, for: section)
+            }
         } else {
             TaskList.changeState(at: index, on: selectedState, in: "success")
+            if selectedState == .toDo && TaskList.getTaskByIndex(at: index, in: "success").getStatus() {
+                checkmarkToggle(at: index, for: section)
+            }
         }
         
         taskListTableView.reloadData()
@@ -76,5 +82,4 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         taskStatePickerView.isHidden = true
         taskStateBar.isHidden = true
     }
-    
 }

@@ -67,7 +67,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         
         navigationItem.title = "Dream Things"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskAlert))
-        navigationItem.rightBarButtonItem?.tintColor = .label
+        navigationItem.rightBarButtonItem?.tintColor = .yellow
     }
     
     @objc private func showAddTaskAlert() {
@@ -112,10 +112,18 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         taskListTableView.reloadData()
     }
     
-    @objc public func checkmarkButtonToggle(sender: UIButton) {
+    @objc public func checkmarkButtonAction(sender: UIButton) {
         let index = sender.tag
+        let numberOfSection = sender.section
+        
+        checkmarkToggle(at: index, for: numberOfSection)
+        
+        taskListTableView.reloadData()
+    }
+    
+    @objc public func checkmarkToggle(at index: Int, for numberOfSection: Int) {
         let removedTask: Task
-        if sender.section == 0 {
+        if numberOfSection == 0 {
             TaskList.toggleStatus(at: index, in: "hold")
             removedTask = TaskList.removeTask(at: index, in: "hold")
             TaskList.appendTask(for: removedTask, in: "success")
@@ -124,8 +132,6 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
             removedTask = TaskList.removeTask(at: index, in: "success")
             TaskList.appendTask(for: removedTask, in: "hold")
         }
-        
-        taskListTableView.reloadData()
     }
     
     @objc public func changeTaskName(sender: UITextField) {
@@ -183,5 +189,4 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
             taskStatePickerView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
-    
 }

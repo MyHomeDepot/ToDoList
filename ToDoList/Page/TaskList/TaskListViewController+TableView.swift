@@ -27,13 +27,13 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         
         let result = UIView(frame: CGRect(x: 0, y: 0, width: taskListTableView.frame.size.width, height: 35))
         
-        let label = UILabel(frame: CGRect(x: 10, y: 4, width: result.frame.size.width, height: 35))
-        label.text = getSection(index: section)
-        label.textColor = .label
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 25, weight: .light)
+        let sectionLabel = UILabel(frame: CGRect(x: 10, y: 4, width: result.frame.size.width, height: 35))
+        sectionLabel.text = getSection(index: section)
+        sectionLabel.textColor = .secondaryLabel
+        sectionLabel.textAlignment = .left
+        sectionLabel.font = .systemFont(ofSize: 20, weight: .regular)
         
-        result.addSubview(label)
+        result.addSubview(sectionLabel)
         
         return result
     }
@@ -70,7 +70,7 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let result = tableView.dequeueReusableCell(withIdentifier: TaskCell.getIdentifier(), for: indexPath) as? TaskCell else {
             fatalError("The TableView could not dequeue a CustomCell in ViewController")
         }
-    
+        
         result.backgroundColor = .lightGray
         
         var task: Task
@@ -83,7 +83,7 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         
         result.checkmarkButton.tag = indexPath.row
         result.checkmarkButton.section = indexPath.section
-        result.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonToggle(sender: )), for: .touchUpInside)
+        result.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender: )), for: .touchUpInside)
         
         result.taskNameTextField.delegate = self
         result.taskNameTextField.tag = indexPath.row
@@ -108,5 +108,4 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
 }
