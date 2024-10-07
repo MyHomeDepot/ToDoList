@@ -8,7 +8,6 @@
 import UIKit
 
 extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
-    
     public func configureTableView() {
         taskListTableView.delegate = self
         taskListTableView.dataSource = self
@@ -17,7 +16,7 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return getSectionCount()
+        return TableSection.allCases.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -28,10 +27,21 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         let result = UIView(frame: CGRect(x: 0, y: 0, width: taskListTableView.frame.size.width, height: 35))
         
         let sectionLabel = UILabel(frame: CGRect(x: 10, y: 4, width: result.frame.size.width, height: 35))
-        sectionLabel.text = getSection(index: section)
+        
+        if let tableSection = TableSection(rawValue: section) {
+            switch tableSection {
+            case .toDo:
+                sectionLabel.text = "HOLD"
+            case .inProgress:
+                sectionLabel.text = "ON THE GO"
+            case .done:
+                sectionLabel.text = "DONE"
+            }
+        }
+        
         sectionLabel.textColor = .secondaryLabel
         sectionLabel.textAlignment = .left
-        sectionLabel.font = .systemFont(ofSize: 20, weight: .regular)
+        sectionLabel.font = .systemFont(ofSize: 18, weight: .light)
         
         result.addSubview(sectionLabel)
         
@@ -48,11 +58,10 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return TaskList.getTaskCount(in: "hold")
-        } else {
-            return TaskList.getTaskCount(in: "success")
+        if let tableSection = TableSection(rawValue: section), let list = taskDictionary[tableSection] {
+            return list.count
         }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -67,44 +76,58 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let result = tableView.dequeueReusableCell(withIdentifier: TaskCell.getIdentifier(), for: indexPath) as? TaskCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.getIdentifier(), for: indexPath) as? TaskCell else {
             fatalError("The TableView could not dequeue a CustomCell in ViewController")
         }
         
-        result.backgroundColor = .lightGray
+        cell.backgroundColor = .lightGray
         
-        var task: Task
-        if indexPath.section == 0 {
-            task = TaskList.getTaskByIndex(at: indexPath.row, in: "hold")
-        } else {
-            task = TaskList.getTaskByIndex(at: indexPath.row, in: "success")
+        if let tableSection = TableSection(rawValue: indexPath.section), let list = taskDictionary[tableSection] {
+            let task = list[indexPath.row]
+            cell.configureCell(task: task)
+            
+            cell.checkmarkButton.tag = indexPath.row
+            cell.checkmarkButton.section = indexPath.section
+            cell.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender: )), for: .touchUpInside)
+            
+            cell.taskNameTextField.tag = indexPath.row
+            cell.taskNameTextField.section = indexPath.section
+            cell.taskNameTextField.addTarget(self, action: #selector(changeTaskName(sender: )), for: .editingDidEnd)
+            
+            cell.taskStateButton.tag = indexPath.row
+            cell.taskStateButton.section = indexPath.section
+            cell.taskStateButton.addTarget(self, action: #selector(showTaskStatePicker(sender: )), for: .touchUpInside)
         }
-        result.configureCell(task: task)
         
-        result.checkmarkButton.tag = indexPath.row
-        result.checkmarkButton.section = indexPath.section
-        result.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender: )), for: .touchUpInside)
-        
-        result.taskNameTextField.delegate = self
-        result.taskNameTextField.tag = indexPath.row
-        result.taskNameTextField.section = indexPath.section
-        result.taskNameTextField.addTarget(self, action: #selector(changeTaskName(sender: )), for: .editingDidEnd)
-        
-        result.taskStateButton.tag = indexPath.row
-        result.taskStateButton.section = indexPath.section
-        result.taskStateButton.addTarget(self, action: #selector(showTaskStatePicker(sender: )), for: .touchUpInside)
-        
-        return result
+        return cell
     }
+    
+    @objc public func checkmarkButtonAction(sender: UIButton) {
+        checkmarkToggle(at: sender.tag, for: sender.section)
+        taskListTableView.reloadData()
+    }
+    
+    func checkmarkToggle(at index: Int, for section: Int) {
+        if let tableSection = TableSection(rawValue: section) {
+            var result = taskDictionary[tableSection]?[index]
+            result!.toggleStatus()
+            taskDictionary[tableSection]?.remove(at: index)
+            
+            if result!.getStatus() == true {
+                taskDictionary[.done]!.insert(result!, at: 0)
+            } else {
+                taskDictionary[.toDo]!.insert(result!, at: 0)
+            }
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete {
-            if indexPath.section == 0 {
-                TaskList.removeTask(at: indexPath.row, in: "hold")
+            if let tableSection = TableSection(rawValue: indexPath.section) {
+                taskDictionary[tableSection]?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
-            } else {
-                TaskList.removeTask(at: indexPath.row, in: "success")
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                taskListTableView.reloadData()
             }
         }
     }

@@ -17,9 +17,10 @@ public struct Task {
         self.title = title
     }
     
-    init(title: String, isCompleted: Bool) {
+    init(title: String, isCompleted: Bool, state: State) {
         self.title = title
         self.isCompleted = isCompleted
+        self.state = state
     }
     
     public func getTitle() -> String {
@@ -49,12 +50,24 @@ public struct Task {
     
     public mutating func setState(state: State) {
         self.state = state
+        autoChangeStatus()
+    }
+    
+    private mutating func autoChangeStatus() {
+        switch state {
+        case .done:
+            isCompleted = true
+        default:
+            isCompleted = false
+        }
     }
     
     private mutating func autoChangeState() {
         switch isCompleted {
-        case true: setState(state: .done)
-        case false: setState(state: .toDo)
+        case true:
+            setState(state: .done)
+        case false:
+            setState(state: .toDo)
         }
     }
 }

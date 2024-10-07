@@ -14,7 +14,6 @@
 		0477115C2C5BD117009DF976 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0477115B2C5BD117009DF976 /* TaskListViewController.swift */; };
 		047711612C5BD11A009DF976 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047711602C5BD11A009DF976 /* Assets.xcassets */; };
 		047711642C5BD11A009DF976 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 047711632C5BD11A009DF976 /* Base */; };
-		04A5BF7E2C74AE37004E63F4 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A5BF7D2C74AE37004E63F4 /* TaskList.swift */; };
 		04BD2C802C73798900995F50 /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BD2C7F2C73798900995F50 /* ViewExtension.swift */; };
 		04F854C02C696DDE0064329F /* TaskListViewController+Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F854BF2C696DDE0064329F /* TaskListViewController+Picker.swift */; };
 		04F854C22C69740F0064329F /* TaskListViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F854C12C69740F0064329F /* TaskListViewController+TableView.swift */; };
@@ -30,7 +29,6 @@
 		047711602C5BD11A009DF976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		047711632C5BD11A009DF976 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		047711652C5BD11A009DF976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		04A5BF7D2C74AE37004E63F4 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
 		04BD2C7F2C73798900995F50 /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		04F854BF2C696DDE0064329F /* TaskListViewController+Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskListViewController+Picker.swift"; sourceTree = "<group>"; };
 		04F854C12C69740F0064329F /* TaskListViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskListViewController+TableView.swift"; sourceTree = "<group>"; };
@@ -90,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				0426A6512C5EBBAB00EFAD58 /* Task.swift */,
-				04A5BF7D2C74AE37004E63F4 /* TaskList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -195,7 +192,6 @@
 				0477115C2C5BD117009DF976 /* TaskListViewController.swift in Sources */,
 				047711582C5BD117009DF976 /* AppDelegate.swift in Sources */,
 				04F854C02C696DDE0064329F /* TaskListViewController+Picker.swift in Sources */,
-				04A5BF7E2C74AE37004E63F4 /* TaskList.swift in Sources */,
 				04BD2C802C73798900995F50 /* ViewExtension.swift in Sources */,
 				0453FF2E2C62A3DF009776D7 /* TaskCell.swift in Sources */,
 				04F854C22C69740F0064329F /* TaskListViewController+TableView.swift in Sources */,
@@ -342,6 +338,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P45AF5HDZW;
@@ -358,6 +355,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = my.list.ToDoList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -369,6 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P45AF5HDZW;
@@ -385,6 +384,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = my.list.ToDoList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

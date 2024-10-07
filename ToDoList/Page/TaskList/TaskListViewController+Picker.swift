@@ -60,21 +60,25 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let index = taskStatePickerView.tag
         let section = taskStatePickerView.section
         
-        let selectRow = taskStatePickerView.selectedRow(inComponent: 0)
-        let selectedState = State.allCases[selectRow]
+        let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
+        let selectedState = State.allCases[selectedRow]
         
-        if section == 0 {
-            TaskList.changeState(at: index, on: selectedState, in: "hold")
-            if selectedState == .done && !TaskList.getTaskByIndex(at: index, in: "hold").getStatus() {
-                checkmarkToggle(at: index, for: section)
-            }
-        } else {
-            TaskList.changeState(at: index, on: selectedState, in: "success")
-            if selectedState == .toDo && TaskList.getTaskByIndex(at: index, in: "success").getStatus() {
-                checkmarkToggle(at: index, for: section)
+        if let tableSection = TableSection(rawValue: section),
+           selectedState != taskDictionary[tableSection]?[index].getState() {
+            
+            var result = taskDictionary[tableSection]?[index]
+            result!.setState(state: selectedState)
+            taskDictionary[tableSection]?.remove(at: index)
+            
+            switch selectedState {
+            case .toDo:
+                taskDictionary[.toDo]?.insert(result!, at: 0)
+            case .inProgress:
+                taskDictionary[.inProgress]?.insert(result!, at: 0)
+            case .done:
+                taskDictionary[.done]?.insert(result!, at: 0)
             }
         }
-        
         taskListTableView.reloadData()
     }
     

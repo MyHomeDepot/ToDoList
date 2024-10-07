@@ -9,14 +9,32 @@ import UIKit
 
 class TaskListViewController: UIViewController, UITextFieldDelegate {
     
-    internal var taskListTableView: UITableView = {
+    public enum TableSection: Int, CaseIterable {
+        case toDo = 0, inProgress, done
+    }
+    
+    public var taskDictionary = [TableSection: [Task]]()
+    
+    public var sourceTaskList: [Task] = [
+        Task(title: "Jump from building"),
+        Task(title: "Backflip", isCompleted: false, state: .inProgress),
+        Task(title: "Meditation", isCompleted: false, state: .inProgress),
+        Task(title: "Bomb the ball", isCompleted: true, state: .done)]
+    
+    func sortData() {
+        taskDictionary[.toDo] = sourceTaskList.filter({ $0.getState() == .toDo})
+        taskDictionary[.inProgress] = sourceTaskList.filter({ $0.getState() == .inProgress})
+        taskDictionary[.done] = sourceTaskList.filter({ $0.getState() == .done})
+    }
+    
+    var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
         
         return result
     }()
     
-    internal let taskStateBar: UIToolbar = {
+    let taskStateBar: UIToolbar = {
         let result = UIToolbar()
         result.isHidden = true
         result.layer.masksToBounds = true
@@ -26,7 +44,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    internal var taskStatePickerView: UIPickerView = {
+    var taskStatePickerView: UIPickerView = {
         let result = UIPickerView()
         result.isHidden = true
         result.layer.cornerRadius = 10
@@ -34,29 +52,13 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    private let sections: [String] = ["Hold", "Success"]
-    
-    private var sourceTaskList: [Task] = [
-        Task(title: "Jump from building"),
-        Task(title: "Backflip"),
-        Task(title: "Meditation"),
-        Task(title: "Bomb the ball", isCompleted: true)]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        TaskList.categorizeTasks(for: sourceTaskList)
+        sortData()
         configureNavigationBar()
         configureTableView()
         configurePickerView()
         viewLayout()
-    }
-    
-    public func getSection(index: Int) -> String {
-        return sections[index]
-    }
-    
-    public func getSectionCount() -> Int {
-        return sections.count
     }
     
     private func configureNavigationBar() {
@@ -108,41 +110,17 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func appendCase(title: String) {
         let result = Task(title: title)
-        TaskList.appendTask(for: result, in: "hold")
+                taskDictionary[.toDo]?.insert(result, at: 0)
         taskListTableView.reloadData()
-    }
-    
-    @objc public func checkmarkButtonAction(sender: UIButton) {
-        let index = sender.tag
-        let numberOfSection = sender.section
-        
-        checkmarkToggle(at: index, for: numberOfSection)
-        
-        taskListTableView.reloadData()
-    }
-    
-    @objc public func checkmarkToggle(at index: Int, for numberOfSection: Int) {
-        let removedTask: Task
-        if numberOfSection == 0 {
-            TaskList.toggleStatus(at: index, in: "hold")
-            removedTask = TaskList.removeTask(at: index, in: "hold")
-            TaskList.appendTask(for: removedTask, in: "success")
-        } else {
-            TaskList.toggleStatus(at: index, in: "success")
-            removedTask = TaskList.removeTask(at: index, in: "success")
-            TaskList.appendTask(for: removedTask, in: "hold")
-        }
     }
     
     @objc public func changeTaskName(sender: UITextField) {
         let index = sender.tag
-        
-        if sender.section == 0 {
-            TaskList.changeTitle(at: index, on: sender.text!, in: "hold")
-        } else {
-            TaskList.changeTitle(at: index, on: sender.text!, in: "success")
+        if let tableSection = TableSection(rawValue: sender.section) {
+            if isValidTitle(text: sender.text!){
+                        taskDictionary[tableSection]?[index].setTitle(title: sender.text!)
+            }
         }
-        
         dismissKeyboard()
         taskListTableView.reloadData()
     }
