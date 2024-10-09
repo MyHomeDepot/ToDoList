@@ -63,9 +63,9 @@ extension TaskListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let selectedState = State.allCases[selectedRow]
         
-        if let tableSection = TableSection(rawValue: section),
-           selectedState != taskDictionary[tableSection]?[index].getState() {
-            
+        let tableSection = activeSections[section]
+        
+        if selectedState != taskDictionary[tableSection]?[index].getState() {
             var result = taskDictionary[tableSection]?[index]
             result!.setState(state: selectedState)
             taskDictionary[tableSection]?.remove(at: index)

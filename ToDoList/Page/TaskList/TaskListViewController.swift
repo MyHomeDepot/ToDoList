@@ -9,24 +9,6 @@ import UIKit
 
 class TaskListViewController: UIViewController, UITextFieldDelegate {
     
-    public enum TableSection: Int, CaseIterable {
-        case toDo = 0, inProgress, done
-    }
-    
-    public var taskDictionary = [TableSection: [Task]]()
-    
-    public var sourceTaskList: [Task] = [
-        Task(title: "Jump from building"),
-        Task(title: "Backflip", isCompleted: false, state: .inProgress),
-        Task(title: "Meditation", isCompleted: false, state: .inProgress),
-        Task(title: "Bomb the ball", isCompleted: true, state: .done)]
-    
-    func sortData() {
-        taskDictionary[.toDo] = sourceTaskList.filter({ $0.getState() == .toDo})
-        taskDictionary[.inProgress] = sourceTaskList.filter({ $0.getState() == .inProgress})
-        taskDictionary[.done] = sourceTaskList.filter({ $0.getState() == .done})
-    }
-    
     var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
@@ -52,6 +34,30 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
+    public enum TableSection: Int, CaseIterable {
+        case toDo, inProgress, done
+    }
+    
+    var activeSections: [TableSection] {
+        return TableSection.allCases.filter { tableSection in
+            taskDictionary[tableSection]?.isEmpty == false
+        }
+    }
+    
+    public var taskDictionary = [TableSection: [Task]]()
+    
+    public var sourceTaskList: [Task] = [
+        Task(title: "Jump from building"),
+        Task(title: "Backflip", isCompleted: false, state: .inProgress),
+        Task(title: "Meditation", isCompleted: false, state: .inProgress),
+        Task(title: "Bomb the ball", isCompleted: true, state: .done)]
+    
+    func sortData() {
+        taskDictionary[.toDo] = sourceTaskList.filter({ $0.getState() == .toDo})
+        taskDictionary[.inProgress] = sourceTaskList.filter({ $0.getState() == .inProgress})
+        taskDictionary[.done] = sourceTaskList.filter({ $0.getState() == .done})
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sortData()
@@ -70,6 +76,13 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         navigationItem.title = "Dream Things"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskAlert))
         navigationItem.rightBarButtonItem?.tintColor = .yellow
+    }
+    
+    private func configureTableView() {
+        taskListTableView.delegate = self
+        taskListTableView.dataSource = self
+        taskListTableView.allowsSelection = false
+        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
     }
     
     @objc private func showAddTaskAlert() {
@@ -110,16 +123,14 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func appendCase(title: String) {
         let result = Task(title: title)
-                taskDictionary[.toDo]?.insert(result, at: 0)
+        taskDictionary[.toDo]?.insert(result, at: 0)
         taskListTableView.reloadData()
     }
     
     @objc public func changeTaskName(sender: UITextField) {
-        let index = sender.tag
-        if let tableSection = TableSection(rawValue: sender.section) {
-            if isValidTitle(text: sender.text!){
-                        taskDictionary[tableSection]?[index].setTitle(title: sender.text!)
-            }
+        let tableSection = activeSections[sender.section]
+        if isValidTitle(text: sender.text!){
+            taskDictionary[tableSection]?[sender.tag].setTitle(title: sender.text!)
         }
         dismissKeyboard()
         taskListTableView.reloadData()
