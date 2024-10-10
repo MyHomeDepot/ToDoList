@@ -34,9 +34,11 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         return result
     }()
     
-    public enum TableSection: Int, CaseIterable {
+    enum TableSection: Int, CaseIterable {
         case toDo, inProgress, done
     }
+    
+    var taskDictionary = [TableSection: [Task]]()
     
     var activeSections: [TableSection] {
         return TableSection.allCases.filter { tableSection in
@@ -44,15 +46,13 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    public var taskDictionary = [TableSection: [Task]]()
-    
-    public var sourceTaskList: [Task] = [
+    private var sourceTaskList: [Task] = [
         Task(title: "Jump from building"),
         Task(title: "Backflip", isCompleted: false, state: .inProgress),
         Task(title: "Meditation", isCompleted: false, state: .inProgress),
         Task(title: "Bomb the ball", isCompleted: true, state: .done)]
     
-    func sortData() {
+    private func sortData() {
         taskDictionary[.toDo] = sourceTaskList.filter({ $0.getState() == .toDo})
         taskDictionary[.inProgress] = sourceTaskList.filter({ $0.getState() == .inProgress})
         taskDictionary[.done] = sourceTaskList.filter({ $0.getState() == .done})
@@ -83,6 +83,12 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         taskListTableView.dataSource = self
         taskListTableView.allowsSelection = false
         taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
+    }
+    
+    private func configurePickerView() {
+        taskStatePickerView.delegate = self
+        taskStatePickerView.dataSource = self
+        taskStatePickerView.reloadAllComponents()
     }
     
     @objc private func showAddTaskAlert() {
@@ -117,7 +123,7 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc private func isValidTitle(text: String) -> Bool {
+    @objc public func isValidTitle(text: String) -> Bool {
         return !text.isEmpty
     }
     
@@ -125,31 +131,6 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         let result = Task(title: title)
         taskDictionary[.toDo]?.insert(result, at: 0)
         taskListTableView.reloadData()
-    }
-    
-    @objc public func changeTaskName(sender: UITextField) {
-        let tableSection = activeSections[sender.section]
-        if isValidTitle(text: sender.text!){
-            taskDictionary[tableSection]?[sender.tag].setTitle(title: sender.text!)
-        }
-        dismissKeyboard()
-        taskListTableView.reloadData()
-    }
-    
-    private func textFieldShouldReturn(sender: UITextField) -> Bool {
-        sender.resignFirstResponder()
-        
-        return true
-    }
-    
-    private func dismissKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func dismissKeyboardTouchOutside() {
-        view.endEditing(true)
     }
     
     private func viewLayout() {
