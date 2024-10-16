@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TaskListViewController: UIViewController, UITextFieldDelegate {
+class TaskListViewController: UIViewController {
     
     var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
@@ -38,9 +38,9 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
         case toDo, inProgress, done
     }
     
-    var taskDictionary = [TableSection: [Task]]()
+    public var taskDictionary = [TableSection: [Task]]()
     
-    var activeSections: [TableSection] {
+    public var activeSections: [TableSection] {
         return TableSection.allCases.filter { tableSection in
             taskDictionary[tableSection]?.isEmpty == false
         }
@@ -81,7 +81,6 @@ class TaskListViewController: UIViewController, UITextFieldDelegate {
     private func configureTableView() {
         taskListTableView.delegate = self
         taskListTableView.dataSource = self
-        taskListTableView.allowsSelection = false
         taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
     }
     

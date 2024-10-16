@@ -31,28 +31,14 @@ extension TaskListViewController: UITableViewDelegate {
         taskListTableView.reloadData()
     }
     
-    @objc private func changeTaskName(sender: UITextField) {
-        let tableSection = activeSections[sender.section]
-        if isValidTitle(text: sender.text!){
-            taskDictionary[tableSection]?[sender.tag].setTitle(title: sender.text!)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let tableSection = activeSections[indexPath.section]
+        if let task = taskDictionary[tableSection]?[indexPath.row] {
+            let vc = TaskViewContoller(section: indexPath.section, index: indexPath.row, task: task)
+            vc.delegate = self
+            navigationController?.pushViewController(vc, animated: true)
         }
-        dismissKeyboard()
-        taskListTableView.reloadData()
-    }
-    
-    private func textFieldShouldReturn(sender: UITextField) -> Bool {
-        sender.resignFirstResponder()
-        return true
-    }
-    
-    private func dismissKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTouchOutside))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func dismissKeyboardTouchOutside() {
-        view.endEditing(true)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
@@ -107,14 +93,20 @@ extension TaskListViewController: UITableViewDataSource {
             cell.checkmarkButton.section = indexPath.section
             cell.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender: )), for: .touchUpInside)
             
-            cell.taskNameTextField.tag = indexPath.row
-            cell.taskNameTextField.section = indexPath.section
-            cell.taskNameTextField.addTarget(self, action: #selector(changeTaskName(sender: )), for: .editingDidEnd)
-            
             cell.taskStateButton.tag = indexPath.row
             cell.taskStateButton.section = indexPath.section
             cell.taskStateButton.addTarget(self, action: #selector(showTaskStatePicker(sender: )), for: .touchUpInside)
         }
         return cell
+    }
+}
+
+extension TaskListViewController: TaskViewDelegate {
+    func changeTaskName(section: Int, index: Int, title: String) {
+        let tableSection = activeSections[section]
+        if isValidTitle(text: title){
+            taskDictionary[tableSection]?[index].setTitle(title: title)
+        }
+        taskListTableView.reloadData()
     }
 }

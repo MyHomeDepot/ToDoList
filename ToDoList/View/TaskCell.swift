@@ -18,13 +18,11 @@ class TaskCell: UITableViewCell {
         return result
     }()
     
-    var taskNameTextField: UITextField = {
-        let result = UITextField()
+    var taskNameLabel: UILabel = {
+        let result = UILabel()
         result.textColor = .label
         result.textAlignment = .left
         result.font = .systemFont(ofSize: 20, weight: .medium)
-        result.text = "Error"
-        result.allowsEditingTextAttributes = true
         
         return result
     }()
@@ -54,7 +52,7 @@ class TaskCell: UITableViewCell {
         checkmarkButton.setImage(UIImage(systemName: task.getStatus() ? "checkmark.square" : "square"), for: .normal)
         checkmarkButton.tintColor = .yellow
         
-        taskNameTextField.text = task.getTitle()
+        taskNameLabel.text = task.getTitle()
         
         taskStateButton.setTitle("\(task.getEnumStateValue())", for: .normal)
         taskStateButton.tintColor = .label
@@ -71,11 +69,11 @@ class TaskCell: UITableViewCell {
     
     private func cellViewLayout() {
         contentView.addSubview(checkmarkButton)
-        contentView.addSubview(taskNameTextField)
+        contentView.addSubview(taskNameLabel)
         contentView.addSubview(taskStateButton)
         
         checkmarkButton.translatesAutoresizingMaskIntoConstraints = false
-        taskNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        taskNameLabel.translatesAutoresizingMaskIntoConstraints = false
         taskStateButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -85,10 +83,10 @@ class TaskCell: UITableViewCell {
             checkmarkButton.heightAnchor.constraint(equalToConstant: 25),
             checkmarkButton.widthAnchor.constraint(equalToConstant: 25),
             
-            taskNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
-            taskNameTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            taskNameTextField.leadingAnchor.constraint(equalTo: checkmarkButton.trailingAnchor, constant: 15),
-            taskNameTextField.trailingAnchor.constraint(equalTo: taskStateButton.trailingAnchor, constant: -50),
+            taskNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            taskNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            taskNameLabel.leadingAnchor.constraint(equalTo: checkmarkButton.trailingAnchor, constant: 10),
+            taskNameLabel.trailingAnchor.constraint(equalTo: taskStateButton.leadingAnchor, constant: -10),
             
             taskStateButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             taskStateButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20),

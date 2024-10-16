@@ -9,62 +9,62 @@ import UIKit
 
 extension TaskListViewController: UIPickerViewDelegate {
     
-        @objc func showTaskStatePicker(sender: UIButton) {
-            taskStateBar.barStyle = .default
-            taskStateBar.isTranslucent = true
-            taskStateBar.sizeToFit()
+    @objc func showTaskStatePicker(sender: UIButton) {
+        taskStateBar.barStyle = .default
+        taskStateBar.isTranslucent = true
+        taskStateBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(doneClick))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelClick))
+        cancelButton.tintColor = .red
+        
+        let title = UIBarButtonItem(title: "Progress", style: .plain, target: nil, action: nil)
+        title.isEnabled = false
+        
+        taskStateBar.setItems([doneButton, spaceButton, title, spaceButton, cancelButton], animated: true)
+        taskStateBar.isUserInteractionEnabled = true
+        
+        taskStatePickerView.tag = sender.tag
+        taskStatePickerView.section = sender.section
+        
+        taskStateBar.isHidden = false
+        taskStatePickerView.isHidden = false
+    }
     
-            let doneButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(doneClick))
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelClick))
-            cancelButton.tintColor = .red
-    
-            let title = UIBarButtonItem(title: "Progress", style: .plain, target: nil, action: nil)
-            title.isEnabled = false
-    
-            taskStateBar.setItems([doneButton, spaceButton, title, spaceButton, cancelButton], animated: true)
-            taskStateBar.isUserInteractionEnabled = true
-    
-            taskStatePickerView.tag = sender.tag
-            taskStatePickerView.section = sender.section
-    
-            taskStateBar.isHidden = false
-            taskStatePickerView.isHidden = false
-        }
-    
-        @objc private func doneClick() {
-            taskStatePickerView.isHidden = true
-            taskStateBar.isHidden = true
-    
-            let index = taskStatePickerView.tag
-            let section = taskStatePickerView.section
-    
-            let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
-            let selectedState = State.allCases[selectedRow]
-    
-            let tableSection = activeSections[section]
-    
-            if selectedState != taskDictionary[tableSection]?[index].getState() {
-                var result = taskDictionary[tableSection]?[index]
-                result!.setState(state: selectedState)
-                taskDictionary[tableSection]?.remove(at: index)
-    
-                switch selectedState {
-                case .toDo:
-                    taskDictionary[.toDo]?.insert(result!, at: 0)
-                case .inProgress:
-                    taskDictionary[.inProgress]?.insert(result!, at: 0)
-                case .done:
-                    taskDictionary[.done]?.insert(result!, at: 0)
-                }
+    @objc private func doneClick() {
+        taskStatePickerView.isHidden = true
+        taskStateBar.isHidden = true
+        
+        let index = taskStatePickerView.tag
+        let section = taskStatePickerView.section
+        
+        let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
+        let selectedState = State.allCases[selectedRow]
+        
+        let tableSection = activeSections[section]
+        
+        if selectedState != taskDictionary[tableSection]?[index].getState() {
+            var result = taskDictionary[tableSection]?[index]
+            result!.setState(state: selectedState)
+            taskDictionary[tableSection]?.remove(at: index)
+            
+            switch selectedState {
+            case .toDo:
+                taskDictionary[.toDo]?.insert(result!, at: 0)
+            case .inProgress:
+                taskDictionary[.inProgress]?.insert(result!, at: 0)
+            case .done:
+                taskDictionary[.done]?.insert(result!, at: 0)
             }
-            taskListTableView.reloadData()
         }
+        taskListTableView.reloadData()
+    }
     
-        @objc func cancelClick() {
-            taskStatePickerView.isHidden = true
-            taskStateBar.isHidden = true
-        }
+    @objc func cancelClick() {
+        taskStatePickerView.isHidden = true
+        taskStateBar.isHidden = true
+    }
 }
 
 
