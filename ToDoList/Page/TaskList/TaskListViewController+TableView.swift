@@ -1,5 +1,5 @@
 //
-//  ViewContoller+TableView.swift
+//  TaskViewController+TableView.swift
 //  ToDoList
 //
 //  Created by LEO on 12.08.2024.
@@ -34,7 +34,7 @@ extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableSection = activeSections[indexPath.section]
         if let task = taskDictionary[tableSection]?[indexPath.row] {
-            let vc = TaskViewContoller(section: indexPath.section, index: indexPath.row, task: task)
+            let vc = SelectedTaskViewController(section: indexPath.section, index: indexPath.row, task: task)
             vc.delegate = self
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -98,15 +98,5 @@ extension TaskListViewController: UITableViewDataSource {
             cell.taskStateButton.addTarget(self, action: #selector(showTaskStatePicker(sender: )), for: .touchUpInside)
         }
         return cell
-    }
-}
-
-extension TaskListViewController: TaskViewDelegate {
-    func changeTaskName(section: Int, index: Int, title: String) {
-        let tableSection = activeSections[section]
-        if isValidTitle(text: title){
-            taskDictionary[tableSection]?[index].setTitle(title: title)
-        }
-        taskListTableView.reloadData()
     }
 }

@@ -42,22 +42,7 @@ extension TaskListViewController: UIPickerViewDelegate {
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let selectedState = State.allCases[selectedRow]
         
-        let tableSection = activeSections[section]
-        
-        if selectedState != taskDictionary[tableSection]?[index].getState() {
-            var result = taskDictionary[tableSection]?[index]
-            result!.setState(state: selectedState)
-            taskDictionary[tableSection]?.remove(at: index)
-            
-            switch selectedState {
-            case .toDo:
-                taskDictionary[.toDo]?.insert(result!, at: 0)
-            case .inProgress:
-                taskDictionary[.inProgress]?.insert(result!, at: 0)
-            case .done:
-                taskDictionary[.done]?.insert(result!, at: 0)
-            }
-        }
+        changeTaskState(section: section, index: index, state: selectedState)
         taskListTableView.reloadData()
     }
     

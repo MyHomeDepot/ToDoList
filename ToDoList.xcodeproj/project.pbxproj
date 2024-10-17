@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041A215B2CC08D6F00FD440C /* TaskListViewController+SelectedTaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A215A2CC08D5F00FD440C /* TaskListViewController+SelectedTaskDelegate.swift */; };
 		0426A6522C5EBBAB00EFAD58 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426A6512C5EBBAB00EFAD58 /* Task.swift */; };
 		0453FF2E2C62A3DF009776D7 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453FF2D2C62A3DF009776D7 /* TaskCell.swift */; };
-		045639112CBD739400542C73 /* TaskViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045639102CBD733D00542C73 /* TaskViewContoller.swift */; };
+		045639112CBD739400542C73 /* SelectedTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045639102CBD733D00542C73 /* SelectedTaskViewController.swift */; };
+		046C14FD2CC008FE00B9244D /* SelectedTaskViewController+SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C14FC2CC008EE00B9244D /* SelectedTaskViewController+SegmentedControl.swift */; };
+		046C14FF2CC00B6A00B9244D /* SelectedTaskViewController+TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046C14FE2CC00B6100B9244D /* SelectedTaskViewController+TextField.swift */; };
 		047711582C5BD117009DF976 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047711572C5BD117009DF976 /* AppDelegate.swift */; };
 		0477115A2C5BD117009DF976 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047711592C5BD117009DF976 /* SceneDelegate.swift */; };
 		0477115C2C5BD117009DF976 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0477115B2C5BD117009DF976 /* TaskListViewController.swift */; };
@@ -21,9 +24,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		041A215A2CC08D5F00FD440C /* TaskListViewController+SelectedTaskDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskListViewController+SelectedTaskDelegate.swift"; sourceTree = "<group>"; };
 		0426A6512C5EBBAB00EFAD58 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0453FF2D2C62A3DF009776D7 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
-		045639102CBD733D00542C73 /* TaskViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewContoller.swift; sourceTree = "<group>"; };
+		045639102CBD733D00542C73 /* SelectedTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedTaskViewController.swift; sourceTree = "<group>"; };
+		046C14FC2CC008EE00B9244D /* SelectedTaskViewController+SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedTaskViewController+SegmentedControl.swift"; sourceTree = "<group>"; };
+		046C14FE2CC00B6100B9244D /* SelectedTaskViewController+TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SelectedTaskViewController+TextField.swift"; sourceTree = "<group>"; };
 		047711542C5BD117009DF976 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		047711572C5BD117009DF976 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		047711592C5BD117009DF976 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +53,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		046C15002CC00C3500B9244D /* SelectedTask */ = {
+			isa = PBXGroup;
+			children = (
+				045639102CBD733D00542C73 /* SelectedTaskViewController.swift */,
+				046C14FE2CC00B6100B9244D /* SelectedTaskViewController+TextField.swift */,
+				046C14FC2CC008EE00B9244D /* SelectedTaskViewController+SegmentedControl.swift */,
+			);
+			path = SelectedTask;
+			sourceTree = "<group>";
+		};
 		0477114B2C5BD117009DF976 = {
 			isa = PBXGroup;
 			children = (
@@ -106,10 +122,10 @@
 		048715452C6BEDB0000BBAB1 /* TaskList */ = {
 			isa = PBXGroup;
 			children = (
-				045639102CBD733D00542C73 /* TaskViewContoller.swift */,
 				0477115B2C5BD117009DF976 /* TaskListViewController.swift */,
-				04F854BF2C696DDE0064329F /* TaskListViewController+Picker.swift */,
 				04F854C12C69740F0064329F /* TaskListViewController+TableView.swift */,
+				04F854BF2C696DDE0064329F /* TaskListViewController+Picker.swift */,
+				041A215A2CC08D5F00FD440C /* TaskListViewController+SelectedTaskDelegate.swift */,
 			);
 			path = TaskList;
 			sourceTree = "<group>";
@@ -118,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				048715452C6BEDB0000BBAB1 /* TaskList */,
+				046C15002CC00C3500B9244D /* SelectedTask */,
 			);
 			path = Page;
 			sourceTree = "<group>";
@@ -194,12 +211,15 @@
 			files = (
 				0477115C2C5BD117009DF976 /* TaskListViewController.swift in Sources */,
 				047711582C5BD117009DF976 /* AppDelegate.swift in Sources */,
-				045639112CBD739400542C73 /* TaskViewContoller.swift in Sources */,
+				041A215B2CC08D6F00FD440C /* TaskListViewController+SelectedTaskDelegate.swift in Sources */,
+				045639112CBD739400542C73 /* SelectedTaskViewController.swift in Sources */,
 				04F854C02C696DDE0064329F /* TaskListViewController+Picker.swift in Sources */,
 				04BD2C802C73798900995F50 /* ViewExtension.swift in Sources */,
 				0453FF2E2C62A3DF009776D7 /* TaskCell.swift in Sources */,
 				04F854C22C69740F0064329F /* TaskListViewController+TableView.swift in Sources */,
+				046C14FF2CC00B6A00B9244D /* SelectedTaskViewController+TextField.swift in Sources */,
 				0426A6522C5EBBAB00EFAD58 /* Task.swift in Sources */,
+				046C14FD2CC008FE00B9244D /* SelectedTaskViewController+SegmentedControl.swift in Sources */,
 				0477115A2C5BD117009DF976 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
