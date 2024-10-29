@@ -16,29 +16,13 @@ class TaskListViewController: UIViewController {
         return result
     }()
     
-    let taskStateBar: UIToolbar = {
-        let result = UIToolbar()
-        result.isHidden = true
-        result.layer.masksToBounds = true
-        result.layer.cornerRadius = 10
-        result.barTintColor = .white
-        
-        return result
-    }()
+    let taskStateChooserView = TaskStateChooserView()
     
-    var taskStatePickerView: UIPickerView = {
-        let result = UIPickerView()
-        result.isHidden = true
-        result.layer.cornerRadius = 10
-        
-        return result
-    }()
+    public var taskDictionary = [TableSection: [Task]]()
     
     enum TableSection: Int, CaseIterable {
         case toDo, inProgress, done
     }
-    
-    public var taskDictionary = [TableSection: [Task]]()
     
     public var activeSections: [TableSection] {
         return TableSection.allCases.filter { tableSection in
@@ -63,7 +47,6 @@ class TaskListViewController: UIViewController {
         sortData()
         configureNavigationBar()
         configureTableView()
-        configurePickerView()
         viewLayout()
     }
     
@@ -82,12 +65,6 @@ class TaskListViewController: UIViewController {
         taskListTableView.delegate = self
         taskListTableView.dataSource = self
         taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
-    }
-    
-    private func configurePickerView() {
-        taskStatePickerView.delegate = self
-        taskStatePickerView.dataSource = self
-        taskStatePickerView.reloadAllComponents()
     }
     
     @objc private func showAddTaskAlert() {
@@ -134,12 +111,10 @@ class TaskListViewController: UIViewController {
     
     private func viewLayout() {
         view.addSubview(taskListTableView)
-        view.addSubview(taskStateBar)
-        view.addSubview(taskStatePickerView)
+        view.addSubview(taskStateChooserView)
         
         taskListTableView.translatesAutoresizingMaskIntoConstraints = false
-        taskStateBar.translatesAutoresizingMaskIntoConstraints = false
-        taskStatePickerView.translatesAutoresizingMaskIntoConstraints = false
+        taskStateChooserView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             taskListTableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -147,15 +122,10 @@ class TaskListViewController: UIViewController {
             taskListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             taskListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            taskStateBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            taskStateBar.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            taskStateBar.widthAnchor.constraint(equalToConstant: 250),
-            taskStateBar.heightAnchor.constraint(equalToConstant: 130),
-            
-            taskStatePickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            taskStatePickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -25),
-            taskStatePickerView.widthAnchor.constraint(equalToConstant: 250),
-            taskStatePickerView.heightAnchor.constraint(equalToConstant: 100)
+            taskStateChooserView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            taskStateChooserView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            taskStateChooserView.widthAnchor.constraint(equalToConstant: 200),
+            taskStateChooserView.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
 }

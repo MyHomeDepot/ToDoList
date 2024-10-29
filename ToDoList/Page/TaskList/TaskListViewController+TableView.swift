@@ -13,24 +13,6 @@ extension TaskListViewController: UITableViewDelegate {
         return 30
     }
     
-    @objc private func checkmarkButtonAction(sender: UIButton) {
-        let index = sender.tag
-        let section = sender.section
-        
-        let tableSection = activeSections[section]
-        if var task = taskDictionary[tableSection]?[index] {
-            task.toggleStatus()
-            taskDictionary[tableSection]?.remove(at: index)
-            
-            if task.getStatus() == true {
-                taskDictionary[.done]?.insert(task, at: 0)
-            } else {
-                taskDictionary[.toDo]?.insert(task, at: 0)
-            }
-        }
-        taskListTableView.reloadData()
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableSection = activeSections[indexPath.section]
         if let task = taskDictionary[tableSection]?[indexPath.row] {
@@ -91,12 +73,37 @@ extension TaskListViewController: UITableViewDataSource {
             
             cell.checkmarkButton.tag = indexPath.row
             cell.checkmarkButton.section = indexPath.section
-            cell.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender: )), for: .touchUpInside)
+            cell.checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction(sender:)), for: .touchUpInside)
             
             cell.taskStateButton.tag = indexPath.row
             cell.taskStateButton.section = indexPath.section
-            cell.taskStateButton.addTarget(self, action: #selector(showTaskStatePicker(sender: )), for: .touchUpInside)
+            cell.taskStateButton.addTarget(self, action: #selector(showChooser(sender:)), for: .touchUpInside)
         }
         return cell
+    }
+    
+    @objc private func checkmarkButtonAction(sender: UIButton) {
+        let index = sender.tag
+        let section = sender.section
+        
+        let tableSection = activeSections[section]
+        if var task = taskDictionary[tableSection]?[index] {
+            task.toggleStatus()
+            taskDictionary[tableSection]?.remove(at: index)
+            
+            if task.getStatus() == true {
+                taskDictionary[.done]?.insert(task, at: 0)
+            } else {
+                taskDictionary[.toDo]?.insert(task, at: 0)
+            }
+        }
+        taskListTableView.reloadData()
+    }
+    
+    @objc func showChooser(sender: UIButton) {
+        taskStateChooserView.delegate = self
+        taskStateChooserView.index = sender.tag
+        taskStateChooserView.section = sender.section
+        taskStateChooserView.isHidden = false
     }
 }
