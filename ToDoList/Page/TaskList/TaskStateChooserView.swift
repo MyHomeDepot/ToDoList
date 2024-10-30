@@ -14,11 +14,21 @@ class TaskStateChooserView: UIView {
     var index: Int?
     var section: Int?
     
-    let stackView = {
+    let foarmStackView: UIStackView = {
         var result = UIStackView()
-        result.translatesAutoresizingMaskIntoConstraints = false
         result.axis = .vertical
+        result.distribution = .equalSpacing
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    let buttonStackView: UIStackView = {
+        var result = UIStackView()
+        result.axis = .horizontal
+        result.spacing = 5
         result.distribution = .fillEqually
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.heightAnchor.constraint(equalToConstant: 40).isActive = true
         return result
     }()
     
@@ -26,24 +36,35 @@ class TaskStateChooserView: UIView {
         let result = UIPickerView()
         result.backgroundColor = .white
         result.layer.cornerRadius = 10
+        result.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return result
     }()
     
-    let saveStateButton = {
+    let saveStateButton: UIButton = {
         var result = UIButton()
-        result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle("Save", for: .normal)
         result.backgroundColor = .green
         result.layer.cornerRadius = 10
+        result.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.addTarget(self, action: #selector(saveChange), for: .touchUpInside)
+        return result
+    }()
+    
+    let cancelFoarmButton: UIButton = {
+        var result = UIButton()
+        result.setTitle("Cancel", for: .normal)
+        result.backgroundColor = .red
+        result.layer.cornerRadius = 10
+        result.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.addTarget(self, action: #selector(hideView), for: .touchUpInside)
         return result
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isHidden = true
-        configureTaskStatePickerView()
-        setupStack()
         setupView()
     }
     
@@ -51,11 +72,15 @@ class TaskStateChooserView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func hideView() {
+        self.isHidden = true
+    }
+    
     @objc func saveChange() {
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let selectedState = State.allCases[selectedRow]
         delegate?.changeTaskState(section: section!, index: index!, state: selectedState)
-        self.isHidden = true
+        hideView()
     }
     
     private func configureTaskStatePickerView() {
@@ -64,18 +89,28 @@ class TaskStateChooserView: UIView {
         taskStatePickerView.reloadAllComponents()
     }
     
-    func setupStack() {
-        stackView.addArrangedSubview(taskStatePickerView)
-        stackView.addArrangedSubview(saveStateButton)
+    func setupFoarmStackView() {
+        foarmStackView.addArrangedSubview(taskStatePickerView)
+        foarmStackView.addArrangedSubview(buttonStackView)
+    }
+    
+    func setupButtonStackView() {
+        buttonStackView.addArrangedSubview(cancelFoarmButton)
+        buttonStackView.addArrangedSubview(saveStateButton)
     }
     
     func setupView() {
-        addSubview(stackView)
+        //self.backgroundColor = .black
+        configureTaskStatePickerView()
+        setupButtonStackView()
+        setupFoarmStackView()
+        
+        addSubview(foarmStackView)
         NSLayoutConstraint.activate([
-            stackView.widthAnchor.constraint(equalToConstant: 200),
-            stackView.heightAnchor.constraint(equalToConstant: 150),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            foarmStackView.widthAnchor.constraint(equalToConstant: 200),
+            foarmStackView.heightAnchor.constraint(equalToConstant: 150),
+            foarmStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            foarmStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }

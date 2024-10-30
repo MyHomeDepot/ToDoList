@@ -74,6 +74,9 @@ class TaskListViewController: UIViewController {
             $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(sender: )), for: .editingChanged)
         }
         
+        let cancelAlertButton = UIAlertAction(title: "Cancel", style: .destructive)
+        result.addAction(cancelAlertButton)
+        
         let saveAlertButton = UIAlertAction(title: "Save", style: .default) { _ in
             if let textFieldText = result.textFields?.first?.text {
                 self.appendCase(title: textFieldText)
@@ -81,9 +84,6 @@ class TaskListViewController: UIViewController {
         }
         saveAlertButton.isEnabled = false
         result.addAction(saveAlertButton)
-        
-        let cancelAlertButton = UIAlertAction(title: "Cancel", style: .destructive)
-        result.addAction(cancelAlertButton)
         
         present(result, animated: true)
     }
