@@ -9,6 +9,12 @@ import UIKit
 
 extension TaskListViewController: UITableViewDelegate {
     
+    func configureTableView() {
+        taskListTableView.delegate = self
+        taskListTableView.dataSource = self
+        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }

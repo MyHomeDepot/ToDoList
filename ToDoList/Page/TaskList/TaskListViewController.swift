@@ -12,7 +12,6 @@ class TaskListViewController: UIViewController {
     var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
-        
         return result
     }()
     
@@ -24,7 +23,7 @@ class TaskListViewController: UIViewController {
         case toDo, inProgress, done
     }
     
-    public var activeSections: [TableSection] {
+    var activeSections: [TableSection] {
         return TableSection.allCases.filter { tableSection in
             taskDictionary[tableSection]?.isEmpty == false
         }
@@ -50,65 +49,6 @@ class TaskListViewController: UIViewController {
         viewLayout()
     }
     
-    private func configureNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .gray
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        navigationItem.title = "Dream Things"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddTaskAlert))
-        navigationItem.rightBarButtonItem?.tintColor = .yellow
-    }
-    
-    private func configureTableView() {
-        taskListTableView.delegate = self
-        taskListTableView.dataSource = self
-        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
-    }
-    
-    @objc private func showAddTaskAlert() {
-        let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
-        
-        result.addTextField {
-            $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(sender: )), for: .editingChanged)
-        }
-        
-        let cancelAlertButton = UIAlertAction(title: "Cancel", style: .destructive)
-        result.addAction(cancelAlertButton)
-        
-        let saveAlertButton = UIAlertAction(title: "Save", style: .default) { _ in
-            if let textFieldText = result.textFields?.first?.text {
-                self.appendCase(title: textFieldText)
-            }
-        }
-        saveAlertButton.isEnabled = false
-        result.addAction(saveAlertButton)
-        
-        present(result, animated: true)
-    }
-    
-    @objc private func textFieldDidChangeInAlert(sender: UITextField) {
-        guard let alertVC = presentedViewController as? UIAlertController else {
-            return
-        }
-        
-        if let text = sender.text,
-           let saveActionInAlert = alertVC.actions.first {
-            saveActionInAlert.isEnabled = isValidTitle(text: text)
-        }
-    }
-    
-    @objc public func isValidTitle(text: String) -> Bool {
-        return !text.isEmpty
-    }
-    
-    @objc private func appendCase(title: String) {
-        let result = Task(title: title)
-        taskDictionary[.toDo]?.insert(result, at: 0)
-        taskListTableView.reloadData()
-    }
-    
     private func viewLayout() {
         view.addSubview(taskListTableView)
         view.addSubview(taskStateChooserView)
@@ -122,10 +62,10 @@ class TaskListViewController: UIViewController {
             taskListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             taskListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            taskStateChooserView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            taskStateChooserView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            taskStateChooserView.widthAnchor.constraint(equalToConstant: 200),
-            taskStateChooserView.heightAnchor.constraint(equalToConstant: 150)
+            taskStateChooserView.topAnchor.constraint(equalTo: view.topAnchor),
+            taskStateChooserView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            taskStateChooserView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            taskStateChooserView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 }

@@ -12,7 +12,9 @@ extension SelectedTaskViewController {
     func configureTaskStateSegmentedControl() {
         taskStateSegmentedControl.addTarget(self, action: #selector(didChangeTaskState(sender: )), for: .valueChanged)
         taskStateSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.label,
-                                                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .medium)], for: .normal)
+                                                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .medium)],
+                                                         for: .normal)
+        taskStateSegmentedControl.backgroundColor = .lightGray
         switch task.getState() {
         case .toDo: taskStateSegmentedControl.selectedSegmentIndex = 0
         case .inProgress: taskStateSegmentedControl.selectedSegmentIndex = 1

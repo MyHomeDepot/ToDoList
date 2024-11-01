@@ -14,6 +14,13 @@ class TaskStateChooserView: UIView {
     var index: Int?
     var section: Int?
     
+    let overlayView: UIView = {
+        let result = UIView()
+        result.backgroundColor = UIColor.gray.withAlphaComponent(0.9)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
     let foarmStackView: UIStackView = {
         var result = UIStackView()
         result.axis = .vertical
@@ -65,7 +72,7 @@ class TaskStateChooserView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isHidden = true
-        setupView()
+        viewLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -89,24 +96,29 @@ class TaskStateChooserView: UIView {
         taskStatePickerView.reloadAllComponents()
     }
     
-    func setupFoarmStackView() {
+    func configureFoarmStackView() {
         foarmStackView.addArrangedSubview(taskStatePickerView)
         foarmStackView.addArrangedSubview(buttonStackView)
     }
     
-    func setupButtonStackView() {
+    func configureButtonStackView() {
         buttonStackView.addArrangedSubview(cancelFoarmButton)
         buttonStackView.addArrangedSubview(saveStateButton)
     }
     
-    func setupView() {
-        //self.backgroundColor = .black
+    func viewLayout() {
         configureTaskStatePickerView()
-        setupButtonStackView()
-        setupFoarmStackView()
+        configureFoarmStackView()
+        configureButtonStackView()
         
-        addSubview(foarmStackView)
+        addSubview(overlayView)
+        overlayView.addSubview(foarmStackView)
         NSLayoutConstraint.activate([
+            overlayView.topAnchor.constraint(equalTo: topAnchor),
+            overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
             foarmStackView.widthAnchor.constraint(equalToConstant: 200),
             foarmStackView.heightAnchor.constraint(equalToConstant: 150),
             foarmStackView.centerYAnchor.constraint(equalTo: centerYAnchor),

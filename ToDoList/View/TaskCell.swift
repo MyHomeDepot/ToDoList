@@ -13,17 +13,13 @@ class TaskCell: UITableViewCell {
     
     var checkmarkButton: UIButton = {
         let result = UIButton()
-        result.setImage(UIImage(systemName: "questionmark"), for: .normal)
-        
         return result
     }()
     
     var taskNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = .label
-        result.textAlignment = .left
         result.font = .systemFont(ofSize: 20, weight: .medium)
-        
         return result
     }()
     
@@ -31,7 +27,6 @@ class TaskCell: UITableViewCell {
         let result = UIButton()
         result.layer.cornerRadius = 10
         result.titleLabel?.font = .italicSystemFont(ofSize: 14)
-        
         return result
     }()
     

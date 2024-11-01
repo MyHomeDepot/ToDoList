@@ -20,15 +20,15 @@ class SelectedTaskViewController: UIViewController {
     let index: Int
     var task: Task
     
+    //let selectedTaskView = SelectedTaskView()
+    
     var taskNameTextField: UITextField = {
         let result = UITextField()
-        
         return result
     }()
     
     var taskStateSegmentedControl: UISegmentedControl = {
         var result = UISegmentedControl(items: State.allCases.map(\.rawValue))
-        
         return result
     }()
     
@@ -62,10 +62,19 @@ class SelectedTaskViewController: UIViewController {
             taskNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             taskNameTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             taskNameTextField.widthAnchor.constraint(equalToConstant: 200),
-            taskNameTextField.heightAnchor.constraint(equalToConstant: 50),
+            taskNameTextField.heightAnchor.constraint(equalToConstant: 40),
             
             taskStateSegmentedControl.topAnchor.constraint(equalToSystemSpacingBelow: taskNameTextField.bottomAnchor, multiplier: 1),
             taskStateSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+//        view.addSubview(selectedTaskView)
+//        selectedTaskView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            
+//            selectedTaskView.topAnchor.constraint(equalTo: view.topAnchor),
+//            selectedTaskView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            selectedTaskView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            selectedTaskView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//        ])
     }
 }

@@ -14,15 +14,11 @@ extension SelectedTaskViewController: UITextFieldDelegate {
         taskNameTextField.addTarget(self, action: #selector(didChangeTaskName(sender: )), for: .editingDidEnd)
         
         taskNameTextField.text = task.getTitle()
-        taskNameTextField.textColor = .label
         taskNameTextField.textAlignment = .center
         taskNameTextField.font = .systemFont(ofSize: 20, weight: .medium)
-        taskNameTextField.backgroundColor = .gray
-        
-        taskNameTextField.borderStyle = .roundedRect
-        taskNameTextField.layer.masksToBounds = true
-        taskNameTextField.layer.cornerRadius = 15.0
-        taskNameTextField.layer.borderWidth = 2.0
+        taskNameTextField.backgroundColor = .lightGray
+        taskNameTextField.layer.cornerRadius = 15
+        taskNameTextField.layer.borderWidth = 2
         taskNameTextField.layer.borderColor = UIColor.white.cgColor
         
         dismissKeyboard()
@@ -48,9 +44,11 @@ extension SelectedTaskViewController: UITextFieldDelegate {
             let alert = UIAlertController(title: "Error",
                                           message: "Task name cannot be empty",
                                           preferredStyle: .alert)
+            
             alert.addAction(UIAlertAction(title: "OK",
                                           style: .default,
                                           handler: nil))
+            
             present(alert, animated: true, completion: nil)
             taskNameTextField.text = task.getTitle()
         } else {
