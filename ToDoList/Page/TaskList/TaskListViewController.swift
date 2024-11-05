@@ -46,10 +46,10 @@ class TaskListViewController: UIViewController {
         sortData()
         configureNavigationBar()
         configureTableView()
-        viewLayout()
+        setupView()
     }
     
-    private func viewLayout() {
+    private func setupView() {
         view.addSubview(taskListTableView)
         view.addSubview(taskStateChooserView)
         

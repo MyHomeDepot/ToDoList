@@ -5,7 +5,7 @@
 //  Created by LEO on 17.10.2024.
 //
 
-extension TaskListViewController: SelectedTaskDelegate {
+extension TaskListViewController: EditTaskDelegate {
     
     func changeTaskName(section: Int, index: Int, title: String) {
         let tableSection = activeSections[section]

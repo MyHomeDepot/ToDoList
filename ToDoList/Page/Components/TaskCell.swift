@@ -32,7 +32,7 @@ class TaskCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        cellViewLayout()
+        setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -62,7 +62,7 @@ class TaskCell: UITableViewCell {
         }
     }
     
-    private func cellViewLayout() {
+    private func setupView() {
         contentView.addSubview(checkmarkButton)
         contentView.addSubview(taskNameLabel)
         contentView.addSubview(taskStateButton)

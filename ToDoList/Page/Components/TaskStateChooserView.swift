@@ -9,7 +9,7 @@ import UIKit
 
 class TaskStateChooserView: UIView {
     
-    weak var delegate: SelectedTaskDelegate?
+    weak var delegate: EditTaskDelegate?
     
     var index: Int?
     var section: Int?
@@ -72,7 +72,7 @@ class TaskStateChooserView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isHidden = true
-        viewLayout()
+        setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -106,7 +106,7 @@ class TaskStateChooserView: UIView {
         buttonStackView.addArrangedSubview(saveStateButton)
     }
     
-    func viewLayout() {
+    func setupView() {
         configureTaskStatePickerView()
         configureFoarmStackView()
         configureButtonStackView()

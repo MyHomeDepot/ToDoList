@@ -22,8 +22,7 @@ extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableSection = activeSections[indexPath.section]
         if let task = taskDictionary[tableSection]?[indexPath.row] {
-            let vc = SelectedTaskViewController(section: indexPath.section, index: indexPath.row, task: task)
-            vc.delegate = self
+            let vc = EditTaskViewController(section: indexPath.section, index: indexPath.row, task: task, delegate: self)
             navigationController?.pushViewController(vc, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: false)
