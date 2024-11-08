@@ -44,36 +44,38 @@ public struct Task {
         return state
     }
     
-    public func getEnumStateValue() -> State.RawValue {
-        return state.rawValue
-    }
-    
     public mutating func setState(state: State) {
         self.state = state
         autoChangeStatus()
     }
     
     private mutating func autoChangeStatus() {
-        switch state {
-        case .done:
+        if state == .done {
             isCompleted = true
-        default:
+        } else {
             isCompleted = false
         }
     }
     
     private mutating func autoChangeState() {
-        switch isCompleted {
-        case true:
+        if isCompleted {
             setState(state: .done)
-        case false:
+        } else {
             setState(state: .toDo)
         }
     }
 }
 
-public enum State: String, CaseIterable {
-    case toDo = "To Do"
-    case inProgress = "In Process"
-    case done = "Done"
+public enum State: Int, CaseIterable {
+    case toDo = 0
+    case inProgress
+    case done
+    
+    var title: String {
+        switch self {
+        case .toDo: return "To Do"
+        case .inProgress: return "In Process"
+        case .done: return "Done"
+        }
+    }
 }

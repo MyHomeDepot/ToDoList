@@ -33,6 +33,7 @@ extension TaskListViewController {
         let saveAlertButton = UIAlertAction(title: "Save", style: .default) { _ in
             if let textFieldText = result.textFields?.first?.text {
                 self.appendCase(title: textFieldText)
+                self.taskListTableView.reloadData()
             }
         }
         saveAlertButton.isEnabled = false
@@ -47,7 +48,7 @@ extension TaskListViewController {
         }
         
         if let text = sender.text,
-           let saveActionInAlert = alertVC.actions.first {
+           let saveActionInAlert = alertVC.actions.last {
             saveActionInAlert.isEnabled = isValidTitle(text: text)
         }
     }

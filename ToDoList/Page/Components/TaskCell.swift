@@ -49,7 +49,7 @@ class TaskCell: UITableViewCell {
         
         taskNameLabel.text = task.getTitle()
         
-        taskStateButton.setTitle("\(task.getEnumStateValue())", for: .normal)
+        taskStateButton.setTitle("\(task.getState().title)", for: .normal)
         taskStateButton.tintColor = .label
         taskStateButton.backgroundColor = statusColor(task: task)
     }

@@ -137,7 +137,7 @@ extension TaskStateChooserView: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let value = State.allCases[row].rawValue
+        let value = State.allCases[row].title
         let attributedString = NSAttributedString(string: "\(value)", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black])
         
         return attributedString

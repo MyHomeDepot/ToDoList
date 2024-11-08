@@ -22,7 +22,8 @@ extension TaskListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableSection = activeSections[indexPath.section]
         if let task = taskDictionary[tableSection]?[indexPath.row] {
-            let vc = EditTaskViewController(section: indexPath.section, index: indexPath.row, task: task, delegate: self)
+            let vc = EditTaskViewController(section: indexPath.section, index: indexPath.row, task: task)
+            vc.delegate = self
             navigationController?.pushViewController(vc, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: false)
@@ -39,6 +40,7 @@ extension TaskListViewController: UITableViewDelegate {
                 tableView.deleteSections(IndexSet(integer: indexPath.section), with: .middle)
             }
             tableView.endUpdates()
+            taskListTableView.reloadData()
         }
     }
 }
@@ -56,14 +58,7 @@ extension TaskListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let tableSection = activeSections[section]
-        switch tableSection {
-        case .toDo:
-            return "HOLD"
-        case .inProgress:
-            return "ON THE GO"
-        case .done:
-            return "DONE"
-        }
+        return tableSection.title
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

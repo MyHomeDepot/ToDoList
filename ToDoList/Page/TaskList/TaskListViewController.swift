@@ -17,14 +17,10 @@ class TaskListViewController: UIViewController {
     
     let taskStateChooserView = TaskStateChooserView()
     
-    public var taskDictionary = [TableSection: [Task]]()
+    var taskDictionary = [State: [Task]]()
     
-    enum TableSection: Int, CaseIterable {
-        case toDo, inProgress, done
-    }
-    
-    var activeSections: [TableSection] {
-        return TableSection.allCases.filter { tableSection in
+    var activeSections: [State] {
+        return State.allCases.filter { tableSection in
             taskDictionary[tableSection]?.isEmpty == false
         }
     }
@@ -36,9 +32,9 @@ class TaskListViewController: UIViewController {
         Task(title: "Bomb the ball", isCompleted: true, state: .done)]
     
     private func sortData() {
-        taskDictionary[.toDo] = sourceTaskList.filter({ $0.getState() == .toDo})
-        taskDictionary[.inProgress] = sourceTaskList.filter({ $0.getState() == .inProgress})
-        taskDictionary[.done] = sourceTaskList.filter({ $0.getState() == .done})
+        taskDictionary[.toDo] = sourceTaskList.filter { $0.getState() == .toDo }
+        taskDictionary[.inProgress] = sourceTaskList.filter { $0.getState() == .inProgress }
+        taskDictionary[.done] = sourceTaskList.filter { $0.getState() == .done }
     }
     
     override func viewDidLoad() {
