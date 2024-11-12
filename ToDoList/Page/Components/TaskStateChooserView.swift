@@ -9,10 +9,8 @@ import UIKit
 
 class TaskStateChooserView: UIView {
     
+    var task: Task?
     weak var delegate: EditTaskDelegate?
-    
-    var index: Int?
-    var section: Int?
     
     let overlayView: UIView = {
         let result = UIView()
@@ -84,32 +82,22 @@ class TaskStateChooserView: UIView {
     }
     
     @objc func saveChange() {
+        guard let task = task else { return }
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
-        let selectedState = State.allCases[selectedRow]
-        delegate?.changeTaskState(section: section!, index: index!, state: selectedState)
+        let state = State.allCases[selectedRow]
+        delegate?.updateTaskState(task: task, state: state)
         hideView()
     }
-    
-    private func configureTaskStatePickerView() {
+
+    func setupView() {
         taskStatePickerView.delegate = self
         taskStatePickerView.dataSource = self
-        taskStatePickerView.reloadAllComponents()
-    }
-    
-    func configureFoarmStackView() {
-        foarmStackView.addArrangedSubview(taskStatePickerView)
-        foarmStackView.addArrangedSubview(buttonStackView)
-    }
-    
-    func configureButtonStackView() {
+        
         buttonStackView.addArrangedSubview(cancelFoarmButton)
         buttonStackView.addArrangedSubview(saveStateButton)
-    }
-    
-    func setupView() {
-        configureTaskStatePickerView()
-        configureFoarmStackView()
-        configureButtonStackView()
+        
+        foarmStackView.addArrangedSubview(taskStatePickerView)
+        foarmStackView.addArrangedSubview(buttonStackView)
         
         addSubview(overlayView)
         overlayView.addSubview(foarmStackView)
@@ -127,19 +115,23 @@ class TaskStateChooserView: UIView {
     }
 }
 
-extension TaskStateChooserView: UIPickerViewDataSource, UIPickerViewDelegate {
+// MARK: - UIPickerViewDelegate
+extension TaskStateChooserView: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let value = State.allCases[row].title
+        let attributedString = NSAttributedString(string: "\(value)", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black])
+        
+        return attributedString
+    }
+}
+
+// MARK: - UIPickerViewDataSource
+extension TaskStateChooserView: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return State.allCases.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let value = State.allCases[row].title
-        let attributedString = NSAttributedString(string: "\(value)", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black])
-        
-        return attributedString
     }
 }

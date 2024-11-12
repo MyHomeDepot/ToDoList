@@ -26,6 +26,7 @@ class EditTaskView: UIView {
         result.layer.cornerRadius = 15
         result.layer.borderWidth = 2
         result.layer.borderColor = UIColor.white.cgColor
+        result.isUserInteractionEnabled = false
         
         return result
     }()
@@ -38,6 +39,7 @@ class EditTaskView: UIView {
                                       for: .normal
         )
         result.backgroundColor = .lightGray
+        result.isUserInteractionEnabled = false
         
         return result
     }()

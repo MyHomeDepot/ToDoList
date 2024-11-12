@@ -23,6 +23,10 @@ public struct Task {
         self.state = state
     }
     
+    public func getId() -> UUID {
+        return id
+    }
+    
     public func getTitle() -> String {
         return title
     }

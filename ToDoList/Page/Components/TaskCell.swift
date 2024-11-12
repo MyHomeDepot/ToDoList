@@ -9,6 +9,9 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     
+    private var task: Task?
+    weak var delegate: EditTaskDelegate?
+    
     private static let identifier = "CustomCell"
     
     var checkmarkButton: UIButton = {
@@ -44,14 +47,30 @@ class TaskCell: UITableViewCell {
     }
     
     public func configureCell (task: Task) {
+        self.backgroundColor = .lightGray
+        self.task = task
+        
         checkmarkButton.setImage(UIImage(systemName: task.getStatus() ? "checkmark.square" : "square"), for: .normal)
         checkmarkButton.tintColor = .yellow
+        checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction), for: .touchUpInside)
         
         taskNameLabel.text = task.getTitle()
         
         taskStateButton.setTitle("\(task.getState().title)", for: .normal)
         taskStateButton.tintColor = .label
         taskStateButton.backgroundColor = statusColor(task: task)
+        taskStateButton.addTarget(self, action: #selector(showChooser), for: .touchUpInside)
+    }
+    
+    @objc private func checkmarkButtonAction() {
+        guard let task = task else { return }
+        delegate?.updateTaskStatus(task: task)
+    }
+    
+    @objc private func showChooser() {
+        guard let task = task else { return }
+        
+        //delegate?.
     }
     
     private func statusColor(task: Task) -> UIColor {

@@ -8,34 +8,37 @@
 import UIKit
 
 protocol EditTaskDelegate: AnyObject {
-    func changeTaskName(section: Int, index: Int, title: String)
-    func changeTaskState(section: Int, index: Int, state: State)
+    func updateTaskStatus(task: Task)
+    func updateTaskName(task: Task, title: String)
+    func updateTaskState(task: Task, state: State)
 }
 
 class EditTaskViewController: UIViewController {
     
+    var isEditMode = false
+    
+    var task: Task
     weak var delegate: EditTaskDelegate?
     private let editTaskView = EditTaskView()
-    
-    var section: Int
-    var index: Int
-    var task: Task
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(section: Int, index: Int, task: Task) {
-        self.section = section
-        self.index = index
+    init(task: Task) {
         self.task = task
         super.init(nibName: nil, bundle: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        editTaskView.taskNameTextField.delegate = self
+        
+        configureEditTaskNavigationBar()
         setupView()
+        
+        editTaskView.taskNameTextField.delegate = self
+        editTaskView.taskNameTextField.text = task.getTitle()
+        editTaskView.taskStateSegmentedControl.selectedSegmentIndex = task.getState().rawValue
     }
     
     private func setupView() {
@@ -49,29 +52,61 @@ class EditTaskViewController: UIViewController {
             editTaskView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
             editTaskView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
         ])
-        
-        editTaskView.taskNameTextField.addTarget(self, action: #selector(didChangeTaskName(sender: )), for: .editingDidEnd)
-        editTaskView.taskNameTextField.text = task.getTitle()
-        
-        editTaskView.taskStateSegmentedControl.addTarget(self, action: #selector(didChangeTaskState(sender: )), for: .valueChanged)
-        editTaskView.taskStateSegmentedControl.selectedSegmentIndex = task.getState().rawValue
-        
+
         dismissKeyboard()
     }
     
-    @objc func didChangeTaskState(sender: UISegmentedControl) {
-        let selectedRow = sender.selectedSegmentIndex
-        delegate?.changeTaskState(section: section, index: index, state: State.allCases[selectedRow])
+    private func configureEditTaskNavigationBar() {
+        navigationItem.title = task.getTitle()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo,
+                                                            target: self,
+                                                            action: #selector(goBack))
+        navigationItem.leftBarButtonItem?.tintColor = .white
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
+                                                            target: self,
+                                                            action: #selector(editButtonTapped))
+        navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
-    @objc func didChangeTaskName(sender: UITextField) {
-        if sender.text?.isEmpty == true {
-            editTaskView.taskNameTextField.text = task.getTitle()
-            showAlert()
+    @objc private func goBack() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func editButtonTapped() {
+        isEditMode.toggle()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: isEditMode ? .save : .edit,
+                                                            target: self,
+                                                            action: #selector(editButtonTapped))
+        navigationItem.rightBarButtonItem?.tintColor = .white
+       
+        if isEditMode {
+            editIsAvailable()
         } else {
-            task.setTitle(title: sender.text!)
-            delegate?.changeTaskName(section: section, index: index, title: sender.text!)
+            saveEditedTask()
         }
+    }
+    
+    private func editIsAvailable() {
+        editTaskView.taskNameTextField.isUserInteractionEnabled = true
+        editTaskView.taskStateSegmentedControl.isUserInteractionEnabled = true
+    }
+    
+    private func saveEditedTask() {
+        guard let text = editTaskView.taskNameTextField.text, !text.isEmpty else {
+            showAlert()
+            editTaskView.taskNameTextField.text = task.getTitle()
+            return
+        }
+        
+        navigationItem.title = text
+        
+        editTaskView.taskNameTextField.isUserInteractionEnabled = false
+        editTaskView.taskStateSegmentedControl.isUserInteractionEnabled = false
+        
+        let selectedRow = editTaskView.taskStateSegmentedControl.selectedSegmentIndex
+        delegate?.updateTaskState(task: task, state: State.allCases[selectedRow])
+        delegate?.updateTaskName(task: task, title: text)
     }
     
     private func showAlert() {
