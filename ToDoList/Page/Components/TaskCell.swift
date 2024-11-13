@@ -16,6 +16,7 @@ class TaskCell: UITableViewCell {
     
     var checkmarkButton: UIButton = {
         let result = UIButton()
+        result.tintColor = .yellow
         return result
     }()
     
@@ -28,6 +29,7 @@ class TaskCell: UITableViewCell {
     
     var taskStateButton: UIButton = {
         let result = UIButton()
+        result.tintColor = .label
         result.layer.cornerRadius = 10
         result.titleLabel?.font = .italicSystemFont(ofSize: 14)
         return result
@@ -50,14 +52,13 @@ class TaskCell: UITableViewCell {
         self.backgroundColor = .lightGray
         self.task = task
         
-        checkmarkButton.setImage(UIImage(systemName: task.getStatus() ? "checkmark.square" : "square"), for: .normal)
-        checkmarkButton.tintColor = .yellow
+        let icon = UIImage(systemName: task.getStatus() ? "checkmark.square" : "square")
+        checkmarkButton.setImage(icon, for: .normal)
         checkmarkButton.addTarget(self, action: #selector(checkmarkButtonAction), for: .touchUpInside)
         
         taskNameLabel.text = task.getTitle()
         
         taskStateButton.setTitle("\(task.getState().title)", for: .normal)
-        taskStateButton.tintColor = .label
         taskStateButton.backgroundColor = statusColor(task: task)
         taskStateButton.addTarget(self, action: #selector(showChooser), for: .touchUpInside)
     }
@@ -69,8 +70,7 @@ class TaskCell: UITableViewCell {
     
     @objc private func showChooser() {
         guard let task = task else { return }
-        
-        //delegate?.
+        delegate?.showChooserView(task: task)
     }
     
     private func statusColor(task: Task) -> UIColor {

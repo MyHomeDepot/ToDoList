@@ -38,6 +38,8 @@ class TaskListViewController: UIViewController {
         taskListTableView.delegate = self
         taskListTableView.dataSource = self
         taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
+        
+        taskStateChooserView.delegate = self
     }
     
     private func setupView() {
@@ -76,9 +78,9 @@ class TaskListViewController: UIViewController {
     @objc private func showAddTaskAlert() {
         let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
-        result.addTextField {
-            $0.addTarget(self, action: #selector(self.textFieldDidChangeInAlert(sender: )), for: .editingChanged)
-        }
+        result.addTextField { $0.addTarget(self,
+                                           action: #selector(self.textFieldDidChangeInAlert(sender: )),
+                                           for: .editingChanged) }
         
         let cancelAlertButton = UIAlertAction(title: "Cancel", style: .destructive)
         result.addAction(cancelAlertButton)

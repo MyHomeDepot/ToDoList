@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		041A215B2CC08D6F00FD440C /* TaskListViewController+EditTaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041A215A2CC08D5F00FD440C /* TaskListViewController+EditTaskDelegate.swift */; };
 		0426A6522C5EBBAB00EFAD58 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426A6512C5EBBAB00EFAD58 /* Task.swift */; };
+		043D90AB2CE411750079F33B /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D90AA2CE411560079F33B /* ArrowView.swift */; };
 		045639112CBD739400542C73 /* EditTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045639102CBD733D00542C73 /* EditTaskViewController.swift */; };
 		047711582C5BD117009DF976 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047711572C5BD117009DF976 /* AppDelegate.swift */; };
 		0477115A2C5BD117009DF976 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047711592C5BD117009DF976 /* SceneDelegate.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		041A215A2CC08D5F00FD440C /* TaskListViewController+EditTaskDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskListViewController+EditTaskDelegate.swift"; sourceTree = "<group>"; };
 		0426A6512C5EBBAB00EFAD58 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		043D90AA2CE411560079F33B /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		045639102CBD733D00542C73 /* EditTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskViewController.swift; sourceTree = "<group>"; };
 		047711542C5BD117009DF976 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		047711572C5BD117009DF976 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				0477A54B2CE34F730067BF7D /* TaskCell.swift */,
 				0477A54C2CE34F730067BF7D /* TaskStateChooserView.swift */,
 				0477A54A2CE34F730067BF7D /* EditTaskView.swift */,
+				043D90AA2CE411560079F33B /* ArrowView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			files = (
 				0477115C2C5BD117009DF976 /* TaskListViewController.swift in Sources */,
 				0477A54D2CE34F730067BF7D /* EditTaskView.swift in Sources */,
+				043D90AB2CE411750079F33B /* ArrowView.swift in Sources */,
 				0477A54E2CE34F730067BF7D /* TaskCell.swift in Sources */,
 				0477A54F2CE34F730067BF7D /* TaskStateChooserView.swift in Sources */,
 				047711582C5BD117009DF976 /* AppDelegate.swift in Sources */,
@@ -360,6 +364,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -389,6 +394,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

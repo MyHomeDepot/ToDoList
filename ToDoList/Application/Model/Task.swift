@@ -12,6 +12,7 @@ public struct Task {
     private var title: String
     private var isCompleted: Bool = false
     private var state: State = State.toDo
+    private var deadline: Date = Date()
     
     init(title: String) {
         self.title = title
@@ -67,6 +68,14 @@ public struct Task {
         } else {
             setState(state: .toDo)
         }
+    }
+    
+    public func getDeadline() -> Date {
+        return self.deadline
+    }
+    
+    public mutating func setDeadline(deadline: Date) {
+        self.deadline = deadline
     }
 }
 

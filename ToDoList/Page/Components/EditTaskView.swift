@@ -9,11 +9,12 @@ import UIKit
 
 class EditTaskView: UIView {
     
-    let stackView: UIStackView = {
+    let mainStackView: UIStackView = {
         let result = UIStackView()
         result.axis = .vertical
         result.distribution = .fillEqually
-        result.spacing = 10
+        result.spacing = 15
+        result.isUserInteractionEnabled = false
         
         return result
     }()
@@ -23,10 +24,9 @@ class EditTaskView: UIView {
         result.textAlignment = .center
         result.font = .systemFont(ofSize: 20, weight: .medium)
         result.backgroundColor = .lightGray
-        result.layer.cornerRadius = 15
-        result.layer.borderWidth = 2
+        result.layer.cornerRadius = 8
+        result.layer.borderWidth = 1
         result.layer.borderColor = UIColor.white.cgColor
-        result.isUserInteractionEnabled = false
         
         return result
     }()
@@ -39,7 +39,34 @@ class EditTaskView: UIView {
                                       for: .normal
         )
         result.backgroundColor = .lightGray
-        result.isUserInteractionEnabled = false
+        
+        return result
+    }()
+    
+    let deadlineStackView: UIStackView = {
+        let result = UIStackView()
+        result.axis = .horizontal
+        result.distribution = .fillProportionally
+        
+        return result
+    }()
+    
+    lazy var deadlineLabel: UILabel = {
+        let result = UILabel()
+        result.text = "Deadline"
+        result.font = .systemFont(ofSize: 20, weight: .medium)
+        
+        return result
+    }()
+    
+    lazy var deadlinePickerView: UIDatePicker = {
+        let result = UIDatePicker()
+        result.datePickerMode = .dateAndTime
+        result.preferredDatePickerStyle = .compact
+        result.minimumDate = Date()
+        result.maximumDate = Date(timeIntervalSince1970: 1480366260)
+        result.subviews.first?.subviews.first?.backgroundColor = .white
+        result.subviews.first?.subviews.last?.backgroundColor = .white
         
         return result
     }()
@@ -54,15 +81,19 @@ class EditTaskView: UIView {
     }
     
     func setupView() {
-        stackView.addArrangedSubview(taskNameTextField)
-        stackView.addArrangedSubview(taskStateSegmentedControl)
+        deadlineStackView.addArrangedSubview(deadlineLabel)
+        deadlineStackView.addArrangedSubview(deadlinePickerView)
         
-        self.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.addArrangedSubview(taskNameTextField)
+        mainStackView.addArrangedSubview(taskStateSegmentedControl)
+        mainStackView.addArrangedSubview(deadlineStackView)
+        
+        self.addSubview(mainStackView)
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            mainStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

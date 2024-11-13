@@ -11,6 +11,8 @@ protocol EditTaskDelegate: AnyObject {
     func updateTaskStatus(task: Task)
     func updateTaskName(task: Task, title: String)
     func updateTaskState(task: Task, state: State)
+    func updateTaskDeadline(task: Task, deadline: Date)
+    func showChooserView(task: Task)
 }
 
 class EditTaskViewController: UIViewController {
@@ -20,6 +22,7 @@ class EditTaskViewController: UIViewController {
     var task: Task
     weak var delegate: EditTaskDelegate?
     private let editTaskView = EditTaskView()
+    private let arrowView = ArrowView()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -39,6 +42,7 @@ class EditTaskViewController: UIViewController {
         editTaskView.taskNameTextField.delegate = self
         editTaskView.taskNameTextField.text = task.getTitle()
         editTaskView.taskStateSegmentedControl.selectedSegmentIndex = task.getState().rawValue
+        editTaskView.deadlinePickerView.date = task.getDeadline()
     }
     
     private func setupView() {
@@ -50,17 +54,26 @@ class EditTaskViewController: UIViewController {
             editTaskView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             editTaskView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             editTaskView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
-            editTaskView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+            editTaskView.heightAnchor.constraint(equalToConstant: 100)
         ])
-
+        
+        arrowView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(arrowView)
+        NSLayoutConstraint.activate([
+            arrowView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 40),
+            arrowView.bottomAnchor.constraint(equalTo: editTaskView.topAnchor, constant: -15),
+            arrowView.widthAnchor.constraint(equalToConstant: 200),
+            arrowView.heightAnchor.constraint(equalToConstant: 270),
+        ])
+        
         dismissKeyboard()
     }
     
     private func configureEditTaskNavigationBar() {
         navigationItem.title = task.getTitle()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo,
-                                                            target: self,
-                                                            action: #selector(goBack))
+                                                           target: self,
+                                                           action: #selector(goBack))
         navigationItem.leftBarButtonItem?.tintColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
@@ -79,17 +92,12 @@ class EditTaskViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(editButtonTapped))
         navigationItem.rightBarButtonItem?.tintColor = .white
-       
+        
         if isEditMode {
-            editIsAvailable()
+            editTaskView.mainStackView.isUserInteractionEnabled = true
         } else {
             saveEditedTask()
         }
-    }
-    
-    private func editIsAvailable() {
-        editTaskView.taskNameTextField.isUserInteractionEnabled = true
-        editTaskView.taskStateSegmentedControl.isUserInteractionEnabled = true
     }
     
     private func saveEditedTask() {
@@ -101,12 +109,12 @@ class EditTaskViewController: UIViewController {
         
         navigationItem.title = text
         
-        editTaskView.taskNameTextField.isUserInteractionEnabled = false
-        editTaskView.taskStateSegmentedControl.isUserInteractionEnabled = false
+        editTaskView.mainStackView.isUserInteractionEnabled = false
         
         let selectedRow = editTaskView.taskStateSegmentedControl.selectedSegmentIndex
         delegate?.updateTaskState(task: task, state: State.allCases[selectedRow])
         delegate?.updateTaskName(task: task, title: text)
+        delegate?.updateTaskDeadline(task: task, deadline: editTaskView.deadlinePickerView.date)
     }
     
     private func showAlert() {

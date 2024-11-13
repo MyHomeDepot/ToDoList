@@ -69,7 +69,7 @@ class TaskStateChooserView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.isHidden = true
+        hideView()
         setupView()
     }
     
@@ -86,9 +86,10 @@ class TaskStateChooserView: UIView {
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let state = State.allCases[selectedRow]
         delegate?.updateTaskState(task: task, state: state)
+        NSLog("\(task.getTitle())")
         hideView()
     }
-
+    
     func setupView() {
         taskStatePickerView.delegate = self
         taskStatePickerView.dataSource = self
