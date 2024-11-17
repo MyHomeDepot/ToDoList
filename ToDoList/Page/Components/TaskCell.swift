@@ -9,29 +9,31 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     
-    private var task: Task?
+    var task: Task?
     weak var delegate: EditTaskDelegate?
-    
     private static let identifier = "CustomCell"
     
-    var checkmarkButton: UIButton = {
+    lazy var checkmarkButton: UIButton = {
         let result = UIButton()
         result.tintColor = .yellow
+        
         return result
     }()
     
-    var taskNameLabel: UILabel = {
+    private lazy var taskNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = .label
         result.font = .systemFont(ofSize: 20, weight: .medium)
+        
         return result
     }()
     
-    var taskStateButton: UIButton = {
+    lazy var taskStateButton: UIButton = {
         let result = UIButton()
         result.tintColor = .label
         result.layer.cornerRadius = 10
         result.titleLabel?.font = .italicSystemFont(ofSize: 14)
+        
         return result
     }()
     
@@ -48,7 +50,7 @@ class TaskCell: UITableViewCell {
         return TaskCell.identifier
     }
     
-    public func configureCell (task: Task) {
+    public func setupCell (task: Task) {
         self.backgroundColor = .lightGray
         self.task = task
         

@@ -9,7 +9,7 @@ import UIKit
 
 class ArrowView: UIView {
     
-    let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let image = UIImage(named: "arrow.png")
         let result = UIImageView(image: image!)
         
@@ -25,9 +25,10 @@ class ArrowView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupView() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupView() {
         addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.bottomAnchor.constraint(equalTo: bottomAnchor),

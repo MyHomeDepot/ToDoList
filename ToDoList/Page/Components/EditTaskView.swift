@@ -9,7 +9,7 @@ import UIKit
 
 class EditTaskView: UIView {
     
-    let mainStackView: UIStackView = {
+    lazy var mainStackView: UIStackView = {
         let result = UIStackView()
         result.axis = .vertical
         result.distribution = .fillEqually
@@ -43,7 +43,7 @@ class EditTaskView: UIView {
         return result
     }()
     
-    let deadlineStackView: UIStackView = {
+    lazy var deadlineStackView: UIStackView = {
         let result = UIStackView()
         result.axis = .horizontal
         result.distribution = .fillProportionally
@@ -51,7 +51,7 @@ class EditTaskView: UIView {
         return result
     }()
     
-    lazy var deadlineLabel: UILabel = {
+    private lazy var deadlineLabel: UILabel = {
         let result = UILabel()
         result.text = "Deadline"
         result.font = .systemFont(ofSize: 20, weight: .medium)
@@ -64,7 +64,6 @@ class EditTaskView: UIView {
         result.datePickerMode = .dateAndTime
         result.preferredDatePickerStyle = .compact
         result.minimumDate = Date()
-        result.maximumDate = Date(timeIntervalSince1970: 1480366260)
         result.subviews.first?.subviews.first?.backgroundColor = .white
         result.subviews.first?.subviews.last?.backgroundColor = .white
         
@@ -80,7 +79,7 @@ class EditTaskView: UIView {
         setupView()
     }
     
-    func setupView() {
+    private func setupView() {
         deadlineStackView.addArrangedSubview(deadlineLabel)
         deadlineStackView.addArrangedSubview(deadlinePickerView)
         

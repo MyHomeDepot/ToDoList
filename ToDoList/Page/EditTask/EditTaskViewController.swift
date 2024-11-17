@@ -17,7 +17,7 @@ protocol EditTaskDelegate: AnyObject {
 
 class EditTaskViewController: UIViewController {
     
-    var isEditMode = false
+    private var isEditMode = false
     
     var task: Task
     weak var delegate: EditTaskDelegate?
@@ -36,17 +36,17 @@ class EditTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureEditTaskNavigationBar()
-        setupView()
-        
         editTaskView.taskNameTextField.delegate = self
-        editTaskView.taskNameTextField.text = task.getTitle()
-        editTaskView.taskStateSegmentedControl.selectedSegmentIndex = task.getState().rawValue
-        editTaskView.deadlinePickerView.date = task.getDeadline()
+        
+        setupEditTaskNavigationBar()
+        setupView()
     }
     
     private func setupView() {
         view.backgroundColor = .gray
+        editTaskView.taskNameTextField.text = task.getTitle()
+        editTaskView.taskStateSegmentedControl.selectedSegmentIndex = task.getState().rawValue
+        editTaskView.deadlinePickerView.date = task.getDeadline()
         
         editTaskView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(editTaskView)
@@ -69,52 +69,52 @@ class EditTaskViewController: UIViewController {
         dismissKeyboard()
     }
     
-    private func configureEditTaskNavigationBar() {
+    private func setupEditTaskNavigationBar() {
         navigationItem.title = task.getTitle()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo,
                                                            target: self,
-                                                           action: #selector(goBack))
+                                                           action: #selector(undoButtonTapped))
         navigationItem.leftBarButtonItem?.tintColor = .white
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
+        setupRightNavBarButton()
+    }
+    
+    private func setupRightNavBarButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: isEditMode ? .save : .edit,
                                                             target: self,
-                                                            action: #selector(editButtonTapped))
+                                                            action: #selector(rightNavBarButtonTapped))
         navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
-    @objc private func goBack() {
+    @objc private func undoButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc private func editButtonTapped() {
-        isEditMode.toggle()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: isEditMode ? .save : .edit,
-                                                            target: self,
-                                                            action: #selector(editButtonTapped))
-        navigationItem.rightBarButtonItem?.tintColor = .white
-        
-        if isEditMode {
-            editTaskView.mainStackView.isUserInteractionEnabled = true
-        } else {
-            saveEditedTask()
-        }
-    }
-    
-    private func saveEditedTask() {
-        guard let text = editTaskView.taskNameTextField.text, !text.isEmpty else {
-            showAlert()
-            editTaskView.taskNameTextField.text = task.getTitle()
+    @objc private func rightNavBarButtonTapped() {
+        if isEditMode && !saveEditedTask() {
             return
         }
         
-        navigationItem.title = text
+        isEditMode.toggle()
+        setupRightNavBarButton()
+        editTaskView.mainStackView.isUserInteractionEnabled = isEditMode
+    }
+    
+    private func saveEditedTask() -> Bool {
+        guard let text = editTaskView.taskNameTextField.text, !text.isEmpty else {
+            showAlert()
+            editTaskView.taskNameTextField.text = task.getTitle()
+            return false
+        }
         
-        editTaskView.mainStackView.isUserInteractionEnabled = false
+        navigationItem.title = text
         
         let selectedRow = editTaskView.taskStateSegmentedControl.selectedSegmentIndex
         delegate?.updateTaskState(task: task, state: State.allCases[selectedRow])
         delegate?.updateTaskName(task: task, title: text)
         delegate?.updateTaskDeadline(task: task, deadline: editTaskView.deadlinePickerView.date)
+        
+        return true
     }
     
     private func showAlert() {

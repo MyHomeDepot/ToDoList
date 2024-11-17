@@ -12,40 +12,44 @@ class TaskStateChooserView: UIView {
     var task: Task?
     weak var delegate: EditTaskDelegate?
     
-    let overlayView: UIView = {
+    private lazy var overlayView: UIView = {
         let result = UIView()
         result.backgroundColor = UIColor.gray.withAlphaComponent(0.9)
-        result.translatesAutoresizingMaskIntoConstraints = false
+        
         return result
     }()
     
-    let foarmStackView: UIStackView = {
+    private lazy var foarmStackView: UIStackView = {
         var result = UIStackView()
         result.axis = .vertical
         result.distribution = .equalSpacing
-        result.translatesAutoresizingMaskIntoConstraints = false
+        
         return result
     }()
     
-    let buttonStackView: UIStackView = {
+    private lazy var buttonStackView: UIStackView = {
         var result = UIStackView()
         result.axis = .horizontal
         result.spacing = 5
         result.distribution = .fillEqually
         result.translatesAutoresizingMaskIntoConstraints = false
         result.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         return result
     }()
     
-    var taskStatePickerView: UIPickerView = {
+    private lazy var taskStatePickerView: UIPickerView = {
         let result = UIPickerView()
         result.backgroundColor = .white
         result.layer.cornerRadius = 10
         result.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        result.delegate = self
+        result.dataSource = self
+        
         return result
     }()
     
-    let saveStateButton: UIButton = {
+    private lazy var saveStateButton: UIButton = {
         var result = UIButton()
         result.setTitle("Save", for: .normal)
         result.backgroundColor = .green
@@ -53,10 +57,11 @@ class TaskStateChooserView: UIView {
         result.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         result.translatesAutoresizingMaskIntoConstraints = false
         result.addTarget(self, action: #selector(saveChange), for: .touchUpInside)
+        
         return result
     }()
     
-    let cancelFoarmButton: UIButton = {
+    private lazy var cancelFoarmButton: UIButton = {
         var result = UIButton()
         result.setTitle("Cancel", for: .normal)
         result.backgroundColor = .red
@@ -64,6 +69,7 @@ class TaskStateChooserView: UIView {
         result.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         result.translatesAutoresizingMaskIntoConstraints = false
         result.addTarget(self, action: #selector(hideView), for: .touchUpInside)
+        
         return result
     }()
     
@@ -77,11 +83,11 @@ class TaskStateChooserView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func hideView() {
+    @objc private func hideView() {
         self.isHidden = true
     }
     
-    @objc func saveChange() {
+    @objc private func saveChange() {
         guard let task = task else { return }
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let state = State.allCases[selectedRow]
@@ -90,10 +96,7 @@ class TaskStateChooserView: UIView {
         hideView()
     }
     
-    func setupView() {
-        taskStatePickerView.delegate = self
-        taskStatePickerView.dataSource = self
-        
+    private func setupView() {
         buttonStackView.addArrangedSubview(cancelFoarmButton)
         buttonStackView.addArrangedSubview(saveStateButton)
         
@@ -102,6 +105,9 @@ class TaskStateChooserView: UIView {
         
         addSubview(overlayView)
         overlayView.addSubview(foarmStackView)
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        foarmStackView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             overlayView.topAnchor.constraint(equalTo: topAnchor),
             overlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -118,11 +124,8 @@ class TaskStateChooserView: UIView {
 
 // MARK: - UIPickerViewDelegate
 extension TaskStateChooserView: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let value = State.allCases[row].title
-        let attributedString = NSAttributedString(string: "\(value)", attributes: [NSAttributedString.Key.foregroundColor : UIColor.black])
-        
-        return attributedString
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return State.allCases[row].title
     }
 }
 

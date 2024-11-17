@@ -9,9 +9,13 @@ import UIKit
 
 class TaskListViewController: UIViewController {
     
-    var taskListTableView: UITableView = {
+    lazy var taskListTableView: UITableView = {
         let result = UITableView(frame: .zero, style: .grouped)
         result.backgroundColor = .gray
+        result.delegate = self
+        result.dataSource = self
+        result.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
+        
         return result
     }()
     
@@ -32,14 +36,10 @@ class TaskListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureMainNavigationBar()
-        setupView()
-        
-        taskListTableView.delegate = self
-        taskListTableView.dataSource = self
-        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.getIdentifier())
-        
         taskStateChooserView.delegate = self
+        
+        setupMainNavigationBar()
+        setupView()
     }
     
     private func setupView() {
@@ -62,7 +62,7 @@ class TaskListViewController: UIViewController {
         ])
     }
     
-    func configureMainNavigationBar() {
+    private func setupMainNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = .gray
         navigationController?.navigationBar.standardAppearance = appearance
@@ -76,6 +76,10 @@ class TaskListViewController: UIViewController {
     }
     
     @objc private func showAddTaskAlert() {
+        present(setupTaskStateChooserView(), animated: true)
+    }
+    
+    private func setupTaskStateChooserView() -> UIAlertController {
         let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
         result.addTextField { $0.addTarget(self,
@@ -94,7 +98,7 @@ class TaskListViewController: UIViewController {
         saveAlertButton.isEnabled = false
         result.addAction(saveAlertButton)
         
-        present(result, animated: true)
+        return result
     }
     
     @objc private func textFieldDidChangeInAlert(sender: UITextField) {
@@ -106,7 +110,7 @@ class TaskListViewController: UIViewController {
         }
     }
     
-    @objc func isValidTitle(text: String) -> Bool {
+    @objc private func isValidTitle(text: String) -> Bool {
         return !text.isEmpty
     }
     
@@ -169,7 +173,7 @@ extension TaskListViewController: UITableViewDataSource {
         
         let state = activeSections[indexPath.section]
         let task = tasks.filter { $0.getState() == state }[indexPath.row]
-        cell.configureCell(task: task)
+        cell.setupCell(task: task)
         cell.delegate = self
         
         return cell
