@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct Task {
-    private let id: UUID = UUID()
+public struct Task: Codable {
+    private var id: UUID = UUID()
     private var title: String
     private var isCompleted: Bool = false
     private var state: State = State.toDo
@@ -79,7 +79,7 @@ public struct Task {
     }
 }
 
-public enum State: Int, CaseIterable {
+public enum State: Int, CaseIterable, Codable {
     case toDo = 0
     case inProgress
     case done

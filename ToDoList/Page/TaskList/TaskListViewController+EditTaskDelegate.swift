@@ -9,28 +9,26 @@ import Foundation
 
 extension TaskListViewController: EditTaskDelegate {
     
-    func updateTaskStatus(task: Task) {
-        guard let index = tasks.firstIndex(where: { $0.getId() == task.getId() }) else { return }
-        tasks[index].toggleStatus()
+    private func updateTask(id: UUID, update: (inout Task) -> Void) {
+        guard let index = tasks.firstIndex(where: { $0.getId() == id }) else { return }
+        update(&tasks[index])
         taskListTableView.reloadData()
+    }
+    
+    func updateTaskStatus(task: Task) {
+        updateTask(id: task.getId()) { $0.toggleStatus() }
     }
     
     func updateTaskName(task: Task, title: String) {
-        guard let index = tasks.firstIndex(where: { $0.getId() == task.getId() }) else { return }
-        tasks[index].setTitle(title: title)
-        taskListTableView.reloadData()
+        updateTask(id: task.getId()) { $0.setTitle(title: title) }
     }
     
     func updateTaskState(task: Task, state: State) {
-        guard let index = tasks.firstIndex(where: { $0.getId() == task.getId() }) else { return }
-        tasks[index].setState(state: state)
-        taskListTableView.reloadData()
+        updateTask(id: task.getId()) { $0.setState(state: state) }
     }
     
     func updateTaskDeadline(task: Task, deadline: Date) {
-        guard let index = tasks.firstIndex(where: { $0.getId() == task.getId() }) else { return }
-        tasks[index].setDeadline(deadline: deadline)
-        taskListTableView.reloadData()
+        updateTask(id: task.getId()) { $0.setDeadline(deadline: deadline) }
     }
     
     func showChooserView(task: Task) {

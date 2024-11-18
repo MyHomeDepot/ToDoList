@@ -146,6 +146,7 @@ class EditTaskViewController: UIViewController {
 }
 
 // MARK: - UITextFieldDelegate
+
 extension EditTaskViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

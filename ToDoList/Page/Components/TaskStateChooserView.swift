@@ -92,7 +92,6 @@ class TaskStateChooserView: UIView {
         let selectedRow = taskStatePickerView.selectedRow(inComponent: 0)
         let state = State.allCases[selectedRow]
         delegate?.updateTaskState(task: task, state: state)
-        NSLog("\(task.getTitle())")
         hideView()
     }
     
@@ -123,6 +122,7 @@ class TaskStateChooserView: UIView {
 }
 
 // MARK: - UIPickerViewDelegate
+
 extension TaskStateChooserView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return State.allCases[row].title
@@ -130,6 +130,7 @@ extension TaskStateChooserView: UIPickerViewDelegate {
 }
 
 // MARK: - UIPickerViewDataSource
+
 extension TaskStateChooserView: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
