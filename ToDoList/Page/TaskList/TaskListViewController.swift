@@ -27,13 +27,19 @@ class TaskListViewController: UIViewController {
         }
     }
     
-    var tasks: [Task] = []
+    var tasks = [Task]() {
+        didSet{
+            self.taskListTableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        copyTasksFileIfNeeded()
-        tasks = loadTasksFromFile()
+        PostService.shared.fetchAllItems { tasks in
+            self.tasks = tasks
+        }
+        print(tasks)
         
         taskStateChooserView.delegate = self
         
@@ -44,48 +50,6 @@ class TaskListViewController: UIViewController {
     private func getTasksFileURL() -> URL {
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return documentDirectory.appendingPathComponent("tasks.json")
-    }
-    
-    private func loadTasksFromFile() -> [Task] {
-        let fileURL = getTasksFileURL()
-        do {
-            let data = try Data(contentsOf: fileURL)
-            let tasks = try JSONDecoder().decode([Task].self, from: data)
-            print("Tasks loaded successfully.")
-            return tasks
-        } catch {
-            print("Failed to load tasks: \(error)")
-            return []
-        }
-    }
-    
-    func saveTasksToFile() {
-        let fileURL = getTasksFileURL()
-        do {
-            let data = try JSONEncoder().encode(tasks)
-            try data.write(to: fileURL)
-            print("Tasks saved to file successfully.")
-        } catch {
-            print("Failed to save tasks: \(error)")
-        }
-    }
-    
-    private func copyTasksFileIfNeeded() {
-        let fileURL = getTasksFileURL()
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            if let bundleFileURL = Bundle.main.url(forResource: "tasks", withExtension: "json") {
-                do {
-                    try FileManager.default.copyItem(at: bundleFileURL, to: fileURL)
-                    print("tasks.json copied to Documents folder.")
-                } catch {
-                    print("Failed to copy tasks.json: \(error)")
-                }
-            } else {
-                print("tasks.json not found in Bundle.")
-            }
-        } else {
-            print("tasks.json already exists in Documents.")
-        }
     }
     
     private func setupView() {
@@ -163,6 +127,7 @@ class TaskListViewController: UIViewController {
     @objc private func appendCase(title: String) {
         let newTask = Task(title: title)
         tasks.insert(newTask, at: 0)
+        PostService.shared.uploadTask(task: newTask)
         taskListTableView.reloadData()
     }
 }
@@ -191,6 +156,7 @@ extension TaskListViewController: UITableViewDelegate {
             let state = activeSections[indexPath.section]
             let task = tasks.filter { $0.getState() == state }[indexPath.row]
             tasks.removeAll{ $0.getId() == task.getId() }
+            PostService.shared.removeTask(task: task)
             taskListTableView.reloadData()
         }
     }

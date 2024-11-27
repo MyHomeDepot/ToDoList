@@ -12,6 +12,7 @@ extension TaskListViewController: EditTaskDelegate {
     private func updateTask(id: UUID, update: (inout Task) -> Void) {
         guard let index = tasks.firstIndex(where: { $0.getId() == id }) else { return }
         update(&tasks[index])
+        PostService.shared.uploadTask(task: tasks[index])
         taskListTableView.reloadData()
     }
     

@@ -18,10 +18,12 @@ public struct Task: Codable {
         self.title = title
     }
     
-    init(title: String, isCompleted: Bool, state: State) {
-        self.title = title
-        self.isCompleted = isCompleted
-        self.state = state
+    init(id: String, dictionary: [String: Any]) {
+        self.id = UUID(uuidString: id) ?? UUID()
+        self.title = dictionary["title"] as! String
+        self.isCompleted = dictionary["isCompleted"] as? Bool ?? false
+        self.state = State(rawValue: dictionary["state"] as! Int)!
+        self.deadline = Date(timeIntervalSince1970: dictionary["deadline"] as! TimeInterval)
     }
     
     public func getId() -> UUID {
