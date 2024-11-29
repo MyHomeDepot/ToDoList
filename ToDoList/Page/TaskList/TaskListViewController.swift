@@ -39,17 +39,11 @@ class TaskListViewController: UIViewController {
         PostService.shared.fetchAllItems { tasks in
             self.tasks = tasks
         }
-        print(tasks)
         
         taskStateChooserView.delegate = self
         
         setupMainNavigationBar()
         setupView()
-    }
-    
-    private func getTasksFileURL() -> URL {
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return documentDirectory.appendingPathComponent("tasks.json")
     }
     
     private func setupView() {
@@ -86,10 +80,10 @@ class TaskListViewController: UIViewController {
     }
     
     @objc private func showAddTaskAlert() {
-        present(setupTaskStateChooserView(), animated: true)
+        present(setupAddTaskAlert(), animated: true)
     }
     
-    private func setupTaskStateChooserView() -> UIAlertController {
+    private func setupAddTaskAlert() -> UIAlertController {
         let result = UIAlertController(title: "Add case on the list", message: "", preferredStyle: .alert)
         
         result.addTextField { $0.addTarget(self,

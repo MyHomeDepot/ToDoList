@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		040031C22CF4996300650E8F /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 040031C12CF4996300650E8F /* FirebaseDatabase */; };
+		040E6A5A2CF9F50E002CF12D /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E6A592CF9F504002CF12D /* TabBarViewController.swift */; };
+		040E6A5E2CFA2CD2002CF12D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */; };
 		0432D8442CF48DB400E4022C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0432D8432CF48DB400E4022C /* GoogleService-Info.plist */; };
 		046DC2CC2CF6013F0078DDBF /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046DC2CB2CF601390078DDBF /* PostService.swift */; };
 		04BFC28A2CEA6EC2005D03DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFC2752CEA6EC2005D03DF /* AppDelegate.swift */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040E6A592CF9F504002CF12D /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0432D8432CF48DB400E4022C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		046DC2CB2CF601390078DDBF /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		047711542C5BD117009DF976 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +64,22 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		040E6A5B2CFA2C6C002CF12D /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				040E6A592CF9F504002CF12D /* TabBarViewController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		040E6A5C2CFA2CBE002CF12D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		046DC2CA2CF601260078DDBF /* API */ = {
@@ -136,7 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				04BFC27B2CEA6EC2005D03DF /* Components */,
+				040E6A5C2CFA2CBE002CF12D /* Profile */,
 				04BFC27D2CEA6EC2005D03DF /* EditTask */,
+				040E6A5B2CFA2C6C002CF12D /* TabBar */,
 				04BFC2802CEA6EC2005D03DF /* TaskList */,
 			);
 			path = Page;
@@ -240,6 +262,8 @@
 				04BFC28F2CEA6EC2005D03DF /* EditTaskViewController.swift in Sources */,
 				04BFC2902CEA6EC2005D03DF /* TaskCell.swift in Sources */,
 				04BFC2912CEA6EC2005D03DF /* TaskListViewController+EditTaskDelegate.swift in Sources */,
+				040E6A5A2CF9F50E002CF12D /* TabBarViewController.swift in Sources */,
+				040E6A5E2CFA2CD2002CF12D /* ProfileViewController.swift in Sources */,
 				04BFC2922CEA6EC2005D03DF /* EditTaskView.swift in Sources */,
 				04BFC2932CEA6EC2005D03DF /* Task.swift in Sources */,
 			);

@@ -24,18 +24,8 @@ struct PostService {
                     fetchedTasks.append(task)
                 }
             }
-            
             completion(fetchedTasks)
         }
-        
-//        var fetchedTasks = [Task]()
-//        
-//        DB_REF.child("Tasks").observe(.childAdded) { (snapshot) in
-//            fetchSingleItem(id: snapshot.key) { (task) in
-//                fetchedTasks.append(task)
-//                completion(fetchedTasks)
-//            }
-//        }
     }
     
     func fetchSingleItem(id: String, completion: @escaping(Task) -> Void) {
