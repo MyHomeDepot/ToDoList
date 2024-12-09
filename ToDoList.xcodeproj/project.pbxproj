@@ -11,7 +11,11 @@
 		040E6A5A2CF9F50E002CF12D /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E6A592CF9F504002CF12D /* TabBarViewController.swift */; };
 		040E6A5E2CFA2CD2002CF12D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */; };
 		0432D8442CF48DB400E4022C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0432D8432CF48DB400E4022C /* GoogleService-Info.plist */; };
+		0436F3DB2D027C3C00ABD44D /* SignInProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0436F3DA2D027C1700ABD44D /* SignInProfileView.swift */; };
+		0436F3DF2D02864700ABD44D /* InfoProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0436F3DE2D02862F00ABD44D /* InfoProfileView.swift */; };
 		046DC2CC2CF6013F0078DDBF /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046DC2CB2CF601390078DDBF /* PostService.swift */; };
+		0488967B2D035B2900B37366 /* SignUpProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0488967A2D035B1900B37366 /* SignUpProfileView.swift */; };
+		0488967D2D035BC500B37366 /* SignUpProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0488967C2D035BA800B37366 /* SignUpProfileController.swift */; };
 		04BFC28A2CEA6EC2005D03DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFC2752CEA6EC2005D03DF /* AppDelegate.swift */; };
 		04BFC28B2CEA6EC2005D03DF /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFC2772CEA6EC2005D03DF /* ArrowView.swift */; };
 		04BFC28C2CEA6EC2005D03DF /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BFC27E2CEA6EC2005D03DF /* TaskListViewController.swift */; };
@@ -30,8 +34,12 @@
 		040E6A592CF9F504002CF12D /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0432D8432CF48DB400E4022C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0436F3DA2D027C1700ABD44D /* SignInProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProfileView.swift; sourceTree = "<group>"; };
+		0436F3DE2D02862F00ABD44D /* InfoProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoProfileView.swift; sourceTree = "<group>"; };
 		046DC2CB2CF601390078DDBF /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		047711542C5BD117009DF976 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0488967A2D035B1900B37366 /* SignUpProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProfileView.swift; sourceTree = "<group>"; };
+		0488967C2D035BA800B37366 /* SignUpProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProfileController.swift; sourceTree = "<group>"; };
 		04BFC2722CEA6EC2005D03DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		04BFC2732CEA6EC2005D03DF /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		04BFC2752CEA6EC2005D03DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				040E6A5D2CFA2CC6002CF12D /* ProfileViewController.swift */,
+				0488967C2D035BA800B37366 /* SignUpProfileController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -127,6 +136,9 @@
 		04BFC27B2CEA6EC2005D03DF /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0436F3DA2D027C1700ABD44D /* SignInProfileView.swift */,
+				0488967A2D035B1900B37366 /* SignUpProfileView.swift */,
+				0436F3DE2D02862F00ABD44D /* InfoProfileView.swift */,
 				04BFC2772CEA6EC2005D03DF /* ArrowView.swift */,
 				04BFC2782CEA6EC2005D03DF /* EditTaskView.swift */,
 				04BFC2792CEA6EC2005D03DF /* TaskCell.swift */,
@@ -255,12 +267,16 @@
 			files = (
 				04BFC28A2CEA6EC2005D03DF /* AppDelegate.swift in Sources */,
 				04BFC28B2CEA6EC2005D03DF /* ArrowView.swift in Sources */,
+				0488967D2D035BC500B37366 /* SignUpProfileController.swift in Sources */,
 				04BFC28C2CEA6EC2005D03DF /* TaskListViewController.swift in Sources */,
 				04BFC28D2CEA6EC2005D03DF /* SceneDelegate.swift in Sources */,
+				0488967B2D035B2900B37366 /* SignUpProfileView.swift in Sources */,
+				0436F3DB2D027C3C00ABD44D /* SignInProfileView.swift in Sources */,
 				04BFC28E2CEA6EC2005D03DF /* TaskStateChooserView.swift in Sources */,
 				046DC2CC2CF6013F0078DDBF /* PostService.swift in Sources */,
 				04BFC28F2CEA6EC2005D03DF /* EditTaskViewController.swift in Sources */,
 				04BFC2902CEA6EC2005D03DF /* TaskCell.swift in Sources */,
+				0436F3DF2D02864700ABD44D /* InfoProfileView.swift in Sources */,
 				04BFC2912CEA6EC2005D03DF /* TaskListViewController+EditTaskDelegate.swift in Sources */,
 				040E6A5A2CF9F50E002CF12D /* TabBarViewController.swift in Sources */,
 				040E6A5E2CFA2CD2002CF12D /* ProfileViewController.swift in Sources */,

@@ -11,14 +11,14 @@ class TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        generateTabBar()
-        setupTabBarAppearance()
+        setupTabBarButtons()
+        setupView()
     }
     
-    private func generateTabBar() {
+    private func setupTabBarButtons() {
         viewControllers = [
             generateVC(
-                viewController: UINavigationController(rootViewController: TaskListViewController()),
+                viewController: TaskListViewController(),
                 title: "Home",
                 image: UIImage(systemName: "house.fill")
             ),
@@ -33,10 +33,10 @@ class TabBarViewController: UITabBarController {
     private func generateVC(viewController: UIViewController, title: String, image: UIImage?) -> UIViewController {
         viewController.tabBarItem.title = title
         viewController.tabBarItem.image = image
-        return viewController
+        return UINavigationController(rootViewController: viewController)
     }
     
-    private func setupTabBarAppearance() {
+    private func setupView() {
         let tabBarBackView = UIView()
         tabBarBackView.backgroundColor = .white
         tabBarBackView.layer.cornerRadius = 15
@@ -45,10 +45,12 @@ class TabBarViewController: UITabBarController {
         tabBar.insertSubview(tabBarBackView, at: 0)
         
         NSLayoutConstraint.activate([
-            tabBarBackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            tabBarBackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             tabBarBackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            tabBarBackView.heightAnchor.constraint(equalToConstant: 50)
+            tabBarBackView.heightAnchor.constraint(equalToConstant: 50),
+            tabBarBackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                    constant: 10),
+            tabBarBackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                     constant: -10)
         ])
         
         tabBar.tintColor = .darkGray
@@ -60,7 +62,7 @@ class TabBarViewController: UITabBarController {
         
         let transition = CATransition()
         transition.type = .fade
-        transition.duration = 0.4
+        transition.duration = 0.3
         tabBarView.layer.add(transition, forKey: nil)
     }
     

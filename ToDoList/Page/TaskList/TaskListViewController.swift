@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol EditTaskDelegate: AnyObject {
+    func updateTaskStatus(task: Task)
+    func updateTaskName(task: Task, title: String)
+    func updateTaskState(task: Task, state: State)
+    func updateTaskDeadline(task: Task, deadline: Date)
+    func showChooserView(task: Task)
+}
+
 class TaskListViewController: UIViewController {
     
     lazy var taskListTableView: UITableView = {
