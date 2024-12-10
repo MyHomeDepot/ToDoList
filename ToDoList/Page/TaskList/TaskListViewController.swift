@@ -27,6 +27,14 @@ class TaskListViewController: UIViewController {
         return result
     }()
     
+    private lazy var loginNeededLabel: UILabel = {
+        let result = UILabel()
+        result.text = "Please sign in to your account"
+        result.font = .systemFont(ofSize: 20, weight: .medium)
+        
+        return result
+    }()
+    
     let taskStateChooserView = TaskStateChooserView()
     
     var activeSections: [State] {
@@ -44,22 +52,35 @@ class TaskListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PostService.shared.fetchAllItems { tasks in
-            self.tasks = tasks
-        }
-        
         taskStateChooserView.delegate = self
         
         setupMainNavigationBar()
         setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if AuthManager.shared.isLoggedIn {
+            PostService.shared.fetchAllItems { tasks in
+                self.tasks = tasks
+            }
+            taskListTableView.isHidden = false
+            loginNeededLabel.isHidden = true
+        } else {
+            taskListTableView.isHidden = true
+            loginNeededLabel.isHidden = false
+        }
+    }
+    
     private func setupView() {
+        view.backgroundColor = .gray
+        
         view.addSubview(taskListTableView)
         view.addSubview(taskStateChooserView)
+        view.addSubview(loginNeededLabel)
         
         taskListTableView.translatesAutoresizingMaskIntoConstraints = false
         taskStateChooserView.translatesAutoresizingMaskIntoConstraints = false
+        loginNeededLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             taskListTableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -70,7 +91,10 @@ class TaskListViewController: UIViewController {
             taskStateChooserView.topAnchor.constraint(equalTo: view.topAnchor),
             taskStateChooserView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             taskStateChooserView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            taskStateChooserView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            taskStateChooserView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            loginNeededLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginNeededLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     

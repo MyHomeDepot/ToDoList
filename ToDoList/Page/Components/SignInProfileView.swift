@@ -81,7 +81,16 @@ class SignInProfileView: UIView {
     }
     
     @objc func logInPressed() {
-        delegate?.logIn()
+        guard let login = signLoginTextField.text, let pass = signPassTextField.text else {
+            print("login or pass is empty")
+            return
+        }
+        
+        if UserDefaults.standard.string(forKey: login) != nil && UserDefaults.standard.string(forKey: login) == pass {
+            delegate?.logIn(login: login)
+        } else {
+            print("login or pass is incorrect")
+        }
     }
     
     @objc private func signUpPressed() {

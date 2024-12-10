@@ -13,6 +13,7 @@
 		0432D8442CF48DB400E4022C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0432D8432CF48DB400E4022C /* GoogleService-Info.plist */; };
 		0436F3DB2D027C3C00ABD44D /* SignInProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0436F3DA2D027C1700ABD44D /* SignInProfileView.swift */; };
 		0436F3DF2D02864700ABD44D /* InfoProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0436F3DE2D02862F00ABD44D /* InfoProfileView.swift */; };
+		043BF3FC2D088C580069B2F2 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF3FB2D088C4B0069B2F2 /* AuthManager.swift */; };
 		046DC2CC2CF6013F0078DDBF /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046DC2CB2CF601390078DDBF /* PostService.swift */; };
 		0488967B2D035B2900B37366 /* SignUpProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0488967A2D035B1900B37366 /* SignUpProfileView.swift */; };
 		0488967D2D035BC500B37366 /* SignUpProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0488967C2D035BA800B37366 /* SignUpProfileController.swift */; };
@@ -36,6 +37,7 @@
 		0432D8432CF48DB400E4022C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0436F3DA2D027C1700ABD44D /* SignInProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInProfileView.swift; sourceTree = "<group>"; };
 		0436F3DE2D02862F00ABD44D /* InfoProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoProfileView.swift; sourceTree = "<group>"; };
+		043BF3FB2D088C4B0069B2F2 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		046DC2CB2CF601390078DDBF /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		047711542C5BD117009DF976 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0488967A2D035B1900B37366 /* SignUpProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProfileView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		046DC2CA2CF601260078DDBF /* API */ = {
 			isa = PBXGroup;
 			children = (
+				043BF3FB2D088C4B0069B2F2 /* AuthManager.swift */,
 				046DC2CB2CF601390078DDBF /* PostService.swift */,
 			);
 			path = API;
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04BFC28A2CEA6EC2005D03DF /* AppDelegate.swift in Sources */,
+				043BF3FC2D088C580069B2F2 /* AuthManager.swift in Sources */,
 				04BFC28B2CEA6EC2005D03DF /* ArrowView.swift in Sources */,
 				0488967D2D035BC500B37366 /* SignUpProfileController.swift in Sources */,
 				04BFC28C2CEA6EC2005D03DF /* TaskListViewController.swift in Sources */,

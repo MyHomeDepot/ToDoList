@@ -33,6 +33,7 @@ class SignUpProfileView: UIView {
         let result = UITextField()
         result.placeholder = " Password"
         result.isSecureTextEntry = true
+        result.textContentType = .password
         result.font = .systemFont(ofSize: 20, weight: .medium)
         result.backgroundColor = .lightGray
         result.layer.cornerRadius = 8
@@ -48,7 +49,7 @@ class SignUpProfileView: UIView {
         result.layer.borderColor = UIColor.white.cgColor
         result.backgroundColor = .orange
         result.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        result.addTarget(self, action: #selector(registerProfile), for: .touchUpInside)
+        result.addTarget(self, action: #selector(createProfile), for: .touchUpInside)
         return result
     }()
     
@@ -61,8 +62,18 @@ class SignUpProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func registerProfile() {
+    @objc private func createProfile() {
+        guard let login = regLoginTextField.text, let pass = regPassTextField.text else {
+            print("login or pass is empty")
+            return
+        }
         
+        if UserDefaults.standard.string(forKey: login) != nil {
+            print("such user exists")
+        } else {
+            UserDefaults.standard.set(pass, forKey: login)
+            print("user is created")
+        }
     }
     
     private func setupView() {

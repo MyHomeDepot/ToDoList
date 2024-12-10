@@ -14,7 +14,7 @@ struct PostService {
     let DB_REF = Database.database().reference()
     
     func fetchAllItems(completion: @escaping([Task]) -> Void) {
-        DB_REF.child("Tasks").observeSingleEvent(of: .value) { snapshot in
+        DB_REF.child("Tasks").child(AuthManager.shared.profile).observeSingleEvent(of: .value) { snapshot in
             var fetchedTasks = [Task]()
             
             for child in snapshot.children {
@@ -44,11 +44,11 @@ struct PostService {
             "title": task.getTitle()
         ] as [String: Any]
         
-        DB_REF.child("Tasks").child(task.getId().uuidString).updateChildValues(value)
+        DB_REF.child("Tasks").child(AuthManager.shared.profile).child(task.getId().uuidString).updateChildValues(value)
     }
     
     func removeTask(task: Task) {
-        DB_REF.child("Tasks").child(task.getId().uuidString).removeValue()
+        DB_REF.child("Tasks").child(AuthManager.shared.profile).child(task.getId().uuidString).removeValue()
     }
     
 }
